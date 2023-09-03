@@ -1,0 +1,27 @@
+body {
+    background-color: #545c65;
+    list-style: none;
+}
+
+.appWrapper {
+    padding: 10px;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+    'h h'
+    'n c';
+    grid-template-rows: 60px 1fr;
+    grid-template-columns: 2fr 10fr;
+    grid-gap: 10px;
+    height: 100vh;
+}
+
+.appWrapperContent {
+    padding: 10px;
+    grid-area: c;
+    background-color: #faf2dd;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
