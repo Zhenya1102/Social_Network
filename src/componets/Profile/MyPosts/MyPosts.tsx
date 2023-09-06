@@ -16,8 +16,8 @@ export const MyPosts = () => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                {postsElements}
-                {/*{posts.map((el)=> (<Post key={el.id} message={el.message} likesCount={el.likesCount}/>))}*/}
+                {/*{postsElements}*/}
+                {posts.map((el)=> (<Post key={el.id} message={el.message} likesCount={el.likesCount}/>))}
             </div>
         </div>
     );
