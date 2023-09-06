@@ -1,0 +1,11 @@
+.dialogsContainer {
+    display: flex;
+    column-gap: 100px;
+    font-size: 20px;
+}
+.dialogItem:hover {
+    color: #f33107;
+}
+.activeLink {
+    color: #bd5238;
+}
