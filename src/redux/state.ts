@@ -1,3 +1,6 @@
+let rerenderEntireTree = (state: StateType) => {
+
+}
 export type DialogsType = {
     id: number
     name: string
@@ -14,6 +17,7 @@ export type PostsType = {
 
 export type ProfilePageType = {
     posts: PostsType[]
+    newPostText: string
 }
 export type DialogsPageType = {
     messages: MessagesType[]
@@ -31,6 +35,7 @@ export const state: StateType = {
             {id: 2, message: 'It`s my first post', likesCount: '23'},
             {id: 3, message: 'Good day', likesCount: '15'}
         ],
+        newPostText: 'I am Samurai'
     },
     dialogsPage: {
         messages: [
@@ -47,11 +52,23 @@ export const state: StateType = {
         ]
     }
 }
-export const addPost = (postMessage:string) => {
+
+export const addPost = () => {
     const newPost = {
         id: 5,
-        message: postMessage,
+        message: state.profilePage.newPostText,
         likesCount: '4'
     }
-    state.profilePage.posts.push(newPost)
+    state.profilePage.posts.unshift(newPost)
+    state.profilePage.newPostText = ''
+    rerenderEntireTree(state)
+}
+
+export const updateNewPostText = (newText: string) => {
+    state.profilePage.newPostText = newText
+    rerenderEntireTree(state)
+}
+
+export const subscribe = (observer:()=> void) => {
+    rerenderEntireTree = observer // наблюдатель // button.addEventListener
 }
