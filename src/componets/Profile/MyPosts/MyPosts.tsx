@@ -6,9 +6,10 @@ import {PostsType} from '../../../redux/state';
 
 type MyPostsPropsType = {
     posts: PostsType[]
-    addPost: () => void
+    // addPost: () => void
     newPostText: string
-    updateNewPostText: (newText: string)=> void
+    // updateNewPostText: (newText: string)=> void
+    dispatch: (action: { type: any, newText?: string }) => void
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
@@ -16,13 +17,13 @@ export const MyPosts = (props: MyPostsPropsType) => {
 
     const addPost = () => {
         if (newPostElement.current) {
-            props.addPost()
+            props.dispatch({type: 'ADD-POST'})
         }
     }
     const onPostChange = () => {
         if (newPostElement.current) {
             const text = newPostElement.current.value
-            props.updateNewPostText(text)
+            props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: text})
         }
     }
 
