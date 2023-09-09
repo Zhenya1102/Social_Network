@@ -1,4 +1,9 @@
+
 // типизация _state
+import {profileReducer} from './profile-reducer';
+import {dialogsReducer} from './dialogs-reducer';
+import {sidebarReducer} from './sidebar-reducer';
+
 export type DialogsType = {
     id: number
     name: string
@@ -19,10 +24,13 @@ export type ProfilePageType = {
 export type DialogsPageType = {
     messages: MessagesType[]
     dialogs: DialogsType[]
+    newMessageBody: string
 }
+
 export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
+    sideBar:{}
 }
 
 
@@ -48,8 +56,10 @@ export const store = {
                 {id: 2, name: 'Diana'},
                 {id: 3, name: 'Alex'},
                 {id: 4, name: 'Svetlana'}
-            ]
-        }
+            ],
+            newMessageBody: ''
+        },
+        sideBar:{}
     },
     _callSubscriber(state: StateType) {
         console.log('State changed')
@@ -62,37 +72,12 @@ export const store = {
         this._callSubscriber = observer // наблюдатель // button.addEventListener
     },
 
-    addPost() {
-        const newPost = {
-            id: 5,
-            message: this._state.profilePage.newPostText,
-            likesCount: '4'
-        }
-        this._state.profilePage.posts.unshift(newPost)
-        this._state.profilePage.newPostText = ''
+    dispatch(action: { type: any, newText?: string, body?:string }) {
+        profileReducer(this._state.profilePage, action)
+        dialogsReducer(this._state.dialogsPage, action)
+        sidebarReducer(this._state.sideBar, action)
         this._callSubscriber(this._state)
-    },
-    updateNewPostText(newText: string) {
-        this._state.profilePage.newPostText = newText
-        this._callSubscriber(this._state)
-    },
-
-    dispatch(action:{type:any, newText?:string}) {
-        if (action.type === 'ADD-POST') {
-            const newPost = {
-                id: 5,
-                message: this._state.profilePage.newPostText,
-                likesCount: '4'
-            }
-            this._state.profilePage.posts.unshift(newPost)
-            this._state.profilePage.newPostText = ''
-            this._callSubscriber(this._state)
-        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
-            if (action.newText) {
-                this._state.profilePage.newPostText = action.newText
-            }
-            this._callSubscriber(this._state)
-        }
     }
 }
-//
+
+

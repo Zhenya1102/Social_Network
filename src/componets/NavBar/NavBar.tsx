@@ -8,7 +8,7 @@ export const NavBar = () => {
             <ul className={s.nav__list}>
                 <li className={s.nav__item}>
                     <NavLink to={'/profile'} activeClassName={s.activeLink} className={s.navLink}>
-                        <a className={s.nav__link}>Profile</a>
+                        {/*<a className={s.nav__link}>Profile</a>*/}Profile
                     </NavLink>
                 </li>
                 <li className={s.nav__item}>

@@ -2,28 +2,29 @@ import React, {RefObject} from 'react';
 import s from './MyPosts.module.css'
 import {Post} from './Post/Post';
 import {PostsType} from '../../../redux/state';
+import {addPostAC, updateNewPostTextAC} from '../../../redux/profile-reducer';
 
 
 type MyPostsPropsType = {
     posts: PostsType[]
-    // addPost: () => void
     newPostText: string
-    // updateNewPostText: (newText: string)=> void
     dispatch: (action: { type: any, newText?: string }) => void
 }
+
+
 
 export const MyPosts = (props: MyPostsPropsType) => {
     const newPostElement: RefObject<HTMLTextAreaElement> = React.createRef()
 
     const addPost = () => {
         if (newPostElement.current) {
-            props.dispatch({type: 'ADD-POST'})
+            props.dispatch(addPostAC())
         }
     }
     const onPostChange = () => {
         if (newPostElement.current) {
             const text = newPostElement.current.value
-            props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: text})
+            props.dispatch(updateNewPostTextAC(text))
         }
     }
 
