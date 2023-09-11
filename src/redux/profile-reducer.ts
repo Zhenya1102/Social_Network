@@ -1,4 +1,3 @@
-
 type PostsType = {
     id: number
     message: string,
@@ -10,7 +9,7 @@ type InitialStateType = {
     newPostText: string
 }
 
-const initialState:InitialStateType = {
+const initialState: InitialStateType = {
     posts: [
         {id: 1, message: 'What is your name', likesCount: '0'},
         {id: 2, message: 'It`s my first post', likesCount: '23'},
@@ -28,15 +27,11 @@ export const profileReducer = (state = initialState, action: ActionType) => {
                 message: state.newPostText,
                 likesCount: '4'
             }
-            state.posts.unshift(newPost)
-            state.newPostText = ''
-            return state
+            const newPosts = [newPost, ...state.posts]
+            return {...state, posts: newPosts, newPostText: ''}
         }
         case 'UPDATE-NEW-POST-TEXT': {
-            if (action.newText) {
-                state.newPostText = action.newText
-            }
-            return state
+            return {...state, newPostText: action.newText}
         }
         default: {
             return state

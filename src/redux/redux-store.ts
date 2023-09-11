@@ -14,9 +14,11 @@ const rootReducer = combineReducers({ // отдаем наши reducers
 // непосредственно создаём store
 
 export const store: ReduxStoreType = createStore(rootReducer) // создаем store
+
 export type ReduxStoreType = Store<AppRootState & {
     dispatch: AppDispatch
 }>
+
 // определить автоматически тип всего объекта состояния
 export type AppRootState = ReturnType<typeof rootReducer> // типизируем наш state
 export type AppDispatch = ThunkDispatch<AppRootState, void, AnyAction>;
@@ -28,6 +30,6 @@ export type AppDispatch = ThunkDispatch<AppRootState, void, AnyAction>;
 
 
 // @ts-ignore
-window.store = store;
+window.store = store; // добавляем наш store глобально в window
 
 

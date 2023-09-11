@@ -1,4 +1,3 @@
-
 type MessagesType = {
     id: number
     message: string
@@ -30,19 +29,16 @@ const initialState: InitialStateType = {
     newMessageBody: ''
 }
 
-export const dialogsReducer = (state= initialState, action: ActionType) => {
+export const dialogsReducer = (state = initialState, action: ActionType) => {
     switch (action.type) {
         case 'UPDATE-NEW-MESSAGE_BODY': {
-            if (action.body) {
-                state.newMessageBody = action.body
-            }
-            return state
+            return {...state, newMessageBody: action.body}
         }
         case 'SEND-MESSAGE': {
             let body = state.newMessageBody
             state.newMessageBody = ''
-            state.messages.unshift({id: 5, message: body})
-            return state
+            const newMessages = [{id: 5, message: body}, ...state.messages];
+            return {...state, messages: newMessages, newMessageBody: ''}
         }
         default: {
             return state
