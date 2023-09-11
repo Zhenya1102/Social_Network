@@ -1,7 +1,8 @@
-import {combineReducers, createStore} from 'redux';
+import {AnyAction, combineReducers, createStore, Store} from 'redux';
 import {profileReducer} from './profile-reducer';
 import {dialogsReducer} from './dialogs-reducer';
 import {sidebarReducer} from './sidebar-reducer';
+import {ThunkDispatch} from 'redux-thunk';
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -11,10 +12,15 @@ const rootReducer = combineReducers({ // отдаем наши reducers
     sideBar: sidebarReducer
 })
 // непосредственно создаём store
-export const store= createStore(rootReducer) // создаем store
 
+export const store: ReduxStoreType = createStore(rootReducer) // создаем store
+export type ReduxStoreType = Store<AppRootState & {
+    dispatch: AppDispatch
+}>
 // определить автоматически тип всего объекта состояния
 export type AppRootState = ReturnType<typeof rootReducer> // типизируем наш state
+export type AppDispatch = ThunkDispatch<AppRootState, void, AnyAction>;
+
 
 // типизация dispatch Redux на уровне Store
 // type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, AnyAction>
