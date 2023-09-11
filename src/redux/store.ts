@@ -1,9 +1,9 @@
-
-// типизация _state
 import {profileReducer} from './profile-reducer';
 import {dialogsReducer} from './dialogs-reducer';
 import {sidebarReducer} from './sidebar-reducer';
 
+
+// типизация _state
 export type DialogsType = {
     id: number
     name: string
@@ -34,7 +34,7 @@ export type StateType = {
 }
 
 
-export const store = {
+export const store = { // store OOP - object
     _state: {
         profilePage: {
             posts: [
