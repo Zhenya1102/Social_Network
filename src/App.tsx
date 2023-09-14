@@ -8,9 +8,9 @@ import {News} from './componets/News/News';
 import {Music} from './componets/Music/Music';
 import {Settings} from './componets/Settings/Settings';
 import {DialogsContainer} from './componets/Dialogs/DialogsContainer';
+import {UsersContainer} from './componets/Users/UsersContainer';
 
-type AppPropsType = {
-}
+type AppPropsType = {}
 
 function App(props: AppPropsType) {
     return (
@@ -20,6 +20,8 @@ function App(props: AppPropsType) {
             <div className="appWrapperContent">
                 <Route path={'/profile'} render={() => <Profile/>}/>
                 <Route path={'/dialogs'} render={() => <DialogsContainer/>}/>
+
+                <Route path={'/users'} render={() => <UsersContainer/>}/>
                 <Route path={'/news'} render={() => <News/>}/>
                 <Route path={'/music'} render={() => <Music/>}/>
                 <Route path={'/settings'} render={() => <Settings/>}/>

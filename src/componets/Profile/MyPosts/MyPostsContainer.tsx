@@ -8,31 +8,7 @@ import {AppDispatch, AppRootState} from '../../../redux/redux-store';
 
 
 // MyPostsContainer Контейнерная компонента компоненты MyPosts
-type MyPostsContainerPropsType = {}
 
-// export const MyPostsContainer = (props: MyPostsContainerPropsType) => {
-//
-//     return (
-//         <StoreContext.Consumer>
-//             {(store) => {
-//                 const state = store.getState()
-//                 const addPost = () => {
-//                     store.dispatch(addPostAC())
-//                 }
-//
-//                 const onPostChange = (text: string) => {
-//                     store.dispatch(updateNewPostTextAC(text))
-//                 }
-//                 return <MyPosts
-//                     updateNewPostText={onPostChange}
-//                     addPost={addPost}
-//                     posts={state.profilePage.posts}
-//                     newPostText={state.profilePage.newPostText}
-//                 />
-//             }}
-//         </StoreContext.Consumer>
-//     )
-// };
 const mapStateToProps = (state: AppRootState) => {
     return {
         posts: state.profilePage.posts,
