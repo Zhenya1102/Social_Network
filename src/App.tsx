@@ -10,9 +10,9 @@ import {Settings} from './componets/Settings/Settings';
 import {DialogsContainer} from './componets/Dialogs/DialogsContainer';
 import {UsersContainer} from './componets/Users/UsersContainer';
 
-type AppPropsType = {}
 
-function App(props: AppPropsType) {
+
+function App() {
     return (
         <div className="appWrapper">
             <Header/>
