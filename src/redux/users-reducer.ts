@@ -22,13 +22,15 @@ type InitialStateType = {
     pageSize: number
     totalCount: number
     currentPage: number
+    isFetching: boolean
 }
 
 let initialState = {
     users: [],
     pageSize: 5, // страниц на ui
     totalCount: 0, // сколько пользователей на странице
-    currentPage: 3 // текущая страница
+    currentPage: 1,// текущая страница
+    isFetching: false
 }
 
 
@@ -49,11 +51,14 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
         case 'SET-TOTAL-USER-COUNT': {
             return {...state, totalCount: action.totalCount}
         }
+        case 'SET-IS-FETCHING': { // работа загрузки
+            return {...state, isFetching: action.isFetching}
+        }
     }
     return state
 }
 
-type ActionType = SetUsers | FollowAC | UnFollowAC | SetCurrentPage | SetTotalUserCountAC
+type ActionType = SetUsers | FollowAC | UnFollowAC | SetCurrentPage | SetTotalUserCount | SetIsFetching
 
 type FollowAC = ReturnType<typeof followAC>
 export const followAC = (id: number) => ({type: 'FOLLOW', id,} as const)
@@ -68,5 +73,8 @@ export const setUsersAC = (users: any) => ({type: 'SET-USERS', users} as const)
 type SetCurrentPage = ReturnType<typeof setCurrentPageAC>
 export const setCurrentPageAC = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
 
-type SetTotalUserCountAC = ReturnType<typeof setTotalUserCountAC>
+type SetTotalUserCount = ReturnType<typeof setTotalUserCountAC>
 export const setTotalUserCountAC = (totalCount: number) => ({type: 'SET-TOTAL-USER-COUNT', totalCount} as const)
+
+type SetIsFetching = ReturnType<typeof setIsFetchingAC>
+export const setIsFetchingAC = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)

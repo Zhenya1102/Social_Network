@@ -3,13 +3,13 @@ import {connect} from 'react-redux';
 import {AppDispatch, AppRootState} from '../../redux/redux-store';
 import {
     followAC,
-    setCurrentPageAC,
+    setCurrentPageAC, setIsFetchingAC,
     setTotalUserCountAC,
     setUsersAC,
     unFollowAC,
     UsersType
 } from '../../redux/users-reducer';
-import {UsersCLassComponent} from './UsersCLassComponent';
+import {UsersAPICLassComponent} from './UsersAPICLassComponent';
 
 
 const mapStateToProps = (state: AppRootState) => {
@@ -17,7 +17,8 @@ const mapStateToProps = (state: AppRootState) => {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
         totalCount: state.usersPage.totalCount,
-        currentPage: state.usersPage.currentPage
+        currentPage: state.usersPage.currentPage,
+        isFetching: state.usersPage.isFetching
     }
 }
 const mapDispatchToProps = (dispatch: AppDispatch) => {
@@ -36,8 +37,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
         },
         setTotalUserCount: (totalCount: number) => {
             dispatch(setTotalUserCountAC(totalCount))
+        },
+        setIsFetching: (isFetching: boolean) => {
+            dispatch(setIsFetchingAC(isFetching))
         }
     }
 }
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersCLassComponent);
+export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPICLassComponent);

@@ -1,27 +1,37 @@
 import React from 'react';
 import styles from './Users.module.css'
-import axios from 'axios';
 import avatar from '../../assets/images/avatar.jpg'
-import {ResponseType, UsersType} from '../../redux/users-reducer';
+import {UsersType} from '../../redux/users-reducer';
 
 type UsersPropsType = {
     users: UsersType[]
+    pageSize: number
+    totalCount: number
+    currentPage: number
     follow: (id: number) => void
     unFollow: (id: number) => void
-    setUsers: (users: UsersType[]) => void
+    onPageChangedClick: (currentPage: number) => void
 }
 
 
 export const Users = (props: UsersPropsType) => {
-    const getUsers = () => { // We make a request to the server by clicking on the button
-        if (props.users.length === 0) {
-            axios.get<ResponseType>('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
-                props.setUsers(res.data.items)
-            })
-        }
+    const pagesCount = Math.ceil(props.totalCount / props.pageSize)
+    const pages = []
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
+    }
+    if (pages.length > 40) { // сократили массив до 20 элементов, если он больше 20 элементов
+        pages.splice(40) // мутировали исходный массив
     }
     return (
         <div>
+            <ul className={styles.pages}>
+                {pages.map((el, index) => {
+                    return <li onClick={(e) => props.onPageChangedClick(el)}
+                               className={props.currentPage === el ? styles.selected : ''}
+                               key={index}>{el}</li>
+                })}
+            </ul>
             <ul>
                 {props.users.map(el => {
                     return <li key={el.id}>
@@ -36,14 +46,10 @@ export const Users = (props: UsersPropsType) => {
                             }}>Follow</button>}</span>
                         <div>{el.name}</div>
                         <div>{el.status}</div>
-                        <span>{'el.location.city'}</span>
-                        <span>{'el.location.country'}</span>
                     </li>
                 })}
             </ul>
-            <button onClick={getUsers}>Get Users</button>
         </div>
-
     );
 };
 
