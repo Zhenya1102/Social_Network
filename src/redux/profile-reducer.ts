@@ -10,6 +10,7 @@ type InitialStateType = {
     posts: PostsType[]
     newPostText: string
     profile: null | ProfileResponseType
+    isFetching: false
 }
 
 const initialState: InitialStateType = {
@@ -19,11 +20,12 @@ const initialState: InitialStateType = {
         {id: 3, message: 'Good day', likesCount: '15'}
     ],
     newPostText: 'I am Samurai',
-    profile: null
+    profile: null,
+    isFetching: false,
 }
 
 
-export const profileReducer = (state:InitialStateType = initialState, action: ActionType): InitialStateType => {
+export const profileReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case 'SET-USER-PROFILE': {
             return {...state, profile: action.profile}
