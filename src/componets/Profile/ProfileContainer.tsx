@@ -4,17 +4,16 @@ import {connect} from 'react-redux';
 import {MapStatePropsType, ProfileAPIClassComponent} from './ProfileAPIClassComponent';
 import {setProfile} from '../../redux/profile-reducer';
 import { withRouter} from 'react-router-dom';
-import {setIsFetching} from '../../redux/users-reducer';
 
 
 export const mapStateToProps = (state: AppRootState): MapStatePropsType => {
     return {
-        profile: state.profilePage.profile,
-        isFetching: state.profilePage.isFetching
+        profile: state.profilePage.profile
+      //  id: statae.id
     }
 }
 
 const WithUrlDataContainerComponent = withRouter(ProfileAPIClassComponent)
 
-export const ProfileContainer = connect(mapStateToProps, {setProfile,setIsFetching })(WithUrlDataContainerComponent);
+export const ProfileContainer = connect(mapStateToProps, {setProfile})(WithUrlDataContainerComponent);
 

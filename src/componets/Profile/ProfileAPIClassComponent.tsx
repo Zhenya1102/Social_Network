@@ -36,11 +36,9 @@ type PathParamsType = {
 
 export type MapStatePropsType = {
     profile: null | ProfileResponseType
-    isFetching: boolean
 }
 export type MapDispatchPropsType = {
     setProfile: (profile: ProfileResponseType) => void
-    setIsFetching: (isFetching: boolean) => void
 }
 
 export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
@@ -53,13 +51,12 @@ type CommonPropsType = RouteComponentProps<PathParamsType> & ProfileClassPropsTy
 export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
 
     componentDidMount() {
-        this.props.setIsFetching(true)
         let userId = this.props.match.params.userId;
-        axios.get<ProfileResponseType>(`https://social-network.samuraijs.com/api/1.0/profile/${userId || 29302}`)
-            .then(res => {
-                this.props.setProfile(res.data)
-                this.props.setIsFetching(false)
-            })
+
+            axios.get<ProfileResponseType>(`https://social-network.samuraijs.com/api/1.0/profile/${userId || 2}`)
+                .then(res => {
+                    this.props.setProfile(res.data)
+                })
 
     }
 
