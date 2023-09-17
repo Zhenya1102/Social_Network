@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './Users.module.css'
 import avatar from '../../assets/images/avatar.jpg'
-import {UsersType} from '../../redux/users-reducer';
+import {NavLink} from 'react-router-dom';
+import {UsersType} from './UsersAPICLassComponent';
 
 type UsersPropsType = {
     users: UsersType[]
@@ -12,7 +13,6 @@ type UsersPropsType = {
     unFollow: (id: number) => void
     onPageChangedClick: (currentPage: number) => void
 }
-
 
 export const Users = (props: UsersPropsType) => {
     const pagesCount = Math.ceil(props.totalCount / props.pageSize)
@@ -35,8 +35,13 @@ export const Users = (props: UsersPropsType) => {
             <ul>
                 {props.users.map(el => {
                     return <li key={el.id}>
-                        <span><img className={styles.user_photo}
-                                   src={el.photos.small !== null ? el.photos.small : avatar} alt="avatar"/></span>
+                        <span>
+                            <NavLink to={'/profile/' + el.id}>
+                                <img className={styles.user_photo}
+                                     src={el.photos.small !== null ? el.photos.small : avatar}
+                                     alt="avatar"/>
+                            </NavLink>
+                        </span>
                         <span>{el.followed ?
                             <button onClick={() => {
                                 props.unFollow(el.id)

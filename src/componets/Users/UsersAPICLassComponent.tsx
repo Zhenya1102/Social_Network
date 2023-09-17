@@ -1,9 +1,26 @@
 import React from 'react';
-import {ResponseType, UsersType} from '../../redux/users-reducer';
 import axios from 'axios';
 import {Users} from './Users';
 import {Preloader} from '../common/Preloader/Preloader';
 
+export type ResponseType = {
+    items: UsersType[]
+    totalCount: number
+    error: null
+}
+export type UsersType = {
+    name: string
+    id: number
+    uniqueUrlName: null | string
+    photos: PhotosType
+    status: null | string
+    followed: boolean
+}
+
+type PhotosType = {
+    small: null | string,
+    large: null | string
+}
 
 type UsersClassPropsType = {
     users: UsersType[]

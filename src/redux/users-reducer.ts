@@ -1,21 +1,5 @@
-export type ResponseType = {
-    items: UsersType[]
-    totalCount: number
-    error: null
-}
-export type UsersType = {
-    name: string
-    id: number
-    uniqueUrlName: null | string
-    photos: PhotosType
-    status: null | string
-    followed: boolean
-}
+import {UsersType} from '../componets/Users/UsersAPICLassComponent';
 
-type PhotosType = {
-    small: null | string,
-    large: null | string
-}
 
 type InitialStateType = {
     users: UsersType[]
@@ -60,21 +44,21 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
 
 type ActionType = SetUsers | FollowAC | UnFollowAC | SetCurrentPage | SetTotalUserCount | SetIsFetching
 
-type FollowAC = ReturnType<typeof followAC>
-export const followAC = (id: number) => ({type: 'FOLLOW', id,} as const)
+type FollowAC = ReturnType<typeof follow>
+export const follow = (id: number) => ({type: 'FOLLOW', id,} as const)
 
-type UnFollowAC = ReturnType<typeof unFollowAC>
-export const unFollowAC = (id: number) => ({type: 'UNFOLLOW', id} as const)
+type UnFollowAC = ReturnType<typeof unFollow>
+export const unFollow = (id: number) => ({type: 'UNFOLLOW', id} as const)
 
 
-type SetUsers = ReturnType<typeof setUsersAC>
-export const setUsersAC = (users: any) => ({type: 'SET-USERS', users} as const)
+type SetUsers = ReturnType<typeof setUsers>
+export const setUsers = (users: UsersType[]) => ({type: 'SET-USERS', users} as const)
 
-type SetCurrentPage = ReturnType<typeof setCurrentPageAC>
-export const setCurrentPageAC = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
+type SetCurrentPage = ReturnType<typeof setCurrentPage>
+export const setCurrentPage = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
 
-type SetTotalUserCount = ReturnType<typeof setTotalUserCountAC>
-export const setTotalUserCountAC = (totalCount: number) => ({type: 'SET-TOTAL-USER-COUNT', totalCount} as const)
+type SetTotalUserCount = ReturnType<typeof setTotalUserCount>
+export const setTotalUserCount = (totalCount: number) => ({type: 'SET-TOTAL-USER-COUNT', totalCount} as const)
 
-type SetIsFetching = ReturnType<typeof setIsFetchingAC>
-export const setIsFetchingAC = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)
+type SetIsFetching = ReturnType<typeof setIsFetching>
+export const setIsFetching = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)

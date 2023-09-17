@@ -1,3 +1,5 @@
+import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
+
 type PostsType = {
     id: number
     message: string,
@@ -7,6 +9,7 @@ type PostsType = {
 type InitialStateType = {
     posts: PostsType[]
     newPostText: string
+    profile: null | ProfileResponseType
 }
 
 const initialState: InitialStateType = {
@@ -15,12 +18,16 @@ const initialState: InitialStateType = {
         {id: 2, message: 'It`s my first post', likesCount: '23'},
         {id: 3, message: 'Good day', likesCount: '15'}
     ],
-    newPostText: 'I am Samurai'
+    newPostText: 'I am Samurai',
+    profile: null
 }
 
 
-export const profileReducer = (state = initialState, action: ActionType):InitialStateType => {
+export const profileReducer = (state:InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
+        case 'SET-USER-PROFILE': {
+            return {...state, profile: action.profile}
+        }
         case 'ADD-POST': {
             const newPost = {
                 id: 5,
@@ -41,10 +48,14 @@ export const profileReducer = (state = initialState, action: ActionType):Initial
 
 
 // action ProfilePage
-type ActionType = AddPostAC | UpdateNewPostTextAC
+type ActionType = SetProfile | AddPostAC | UpdateNewPostTextAC
 
 type AddPostAC = ReturnType<typeof addPostAC>
 export const addPostAC = () => ({type: 'ADD-POST'} as const)
 
 type UpdateNewPostTextAC = ReturnType<typeof updateNewPostTextAC>
 export const updateNewPostTextAC = (text: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText: text} as const)
+
+
+export type SetProfile = ReturnType<typeof setProfile>
+export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PROFILE', profile} as const)
