@@ -4,6 +4,7 @@ import {dialogsReducer} from './dialogs-reducer';
 import {sidebarReducer} from './sidebar-reducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {usersReducer} from './users-reducer';
+import {authReducer} from './auth-reducer';
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({ // отдаем наши reducers
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sideBar: sidebarReducer,
-    usersPage: usersReducer
+    usersPage: usersReducer,
+    auth: authReducer
 })
 // непосредственно создаём store
 

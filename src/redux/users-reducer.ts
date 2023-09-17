@@ -60,5 +60,5 @@ export const setCurrentPage = (currentPage: number) => ({type: 'SET-CURRENT-PAGE
 type SetTotalUserCount = ReturnType<typeof setTotalUserCount>
 export const setTotalUserCount = (totalCount: number) => ({type: 'SET-TOTAL-USER-COUNT', totalCount} as const)
 
-type SetIsFetching = ReturnType<typeof setIsFetching>
+export type SetIsFetching = ReturnType<typeof setIsFetching>
 export const setIsFetching = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)

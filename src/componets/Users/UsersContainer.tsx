@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {AppRootState} from '../../redux/redux-store';
-
 import {UsersAPICLassComponent} from './UsersAPICLassComponent';
 import {follow, setCurrentPage, setIsFetching, setTotalUserCount, setUsers, unFollow} from '../../redux/users-reducer';
 
