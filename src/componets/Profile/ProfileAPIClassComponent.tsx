@@ -64,7 +64,6 @@ export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
     }
 
     render() {
-        console.log('profile', this.props.profile)
         return (
             <div>
                 <Profile profile={this.props.profile}/>

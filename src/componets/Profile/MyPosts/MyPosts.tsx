@@ -15,7 +15,10 @@ export const MyPosts = (props: MyPostsPropsType) => {
 
     const onAddPost = () => {
         if (newPostElement.current) {
-            props.addPost()
+            const text = newPostElement.current.value.trim()
+            if (text !== '') {
+                props.addPost();
+            }
         }
     }
 

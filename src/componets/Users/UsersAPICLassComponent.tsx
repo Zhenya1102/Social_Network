@@ -1,26 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import {Users} from './Users';
 import {Preloader} from '../common/Preloader/Preloader';
+import {usersApi, UsersType} from '../../api/api';
 
-export type ResponseType = {
-    items: UsersType[]
-    totalCount: number
-    error: null
-}
-export type UsersType = {
-    name: string
-    id: number
-    uniqueUrlName: null | string
-    photos: PhotosType
-    status: null | string
-    followed: boolean
-}
 
-type PhotosType = {
-    small: null | string,
-    large: null | string
-}
 
 type UsersClassPropsType = {
     users: UsersType[]
@@ -39,25 +22,23 @@ type UsersClassPropsType = {
 export class UsersAPICLassComponent extends React.Component<UsersClassPropsType> {
     componentDidMount() {
         this.props.setIsFetching(true)
-        axios.get<ResponseType>(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then((res) => {
-            this.props.setUsers(res.data.items)
-            this.props.setIsFetching(false)
-        }) // сделали первый запрос сервер о получении данных
-        axios.get<ResponseType>(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then((res) => {
-            this.props.setTotalUserCount(res.data.totalCount)
-            this.props.setIsFetching(false)
-        }) // установили общее количество пользователей
+        usersApi.getUsers(this.props.currentPage, this.props.pageSize)
+            .then((res) => {
+                this.props.setUsers(res.data.items)
+                this.props.setTotalUserCount(res.data.totalCount)
+                this.props.setIsFetching(false)
+            }) // сделали первый запрос на сервер о получении данных
     }
-
     onPageChangedClick = (currentPage: number) => {
         this.props.setIsFetching(true)
         this.props.setCurrentPage(currentPage) // изменяем текущую страничку пользователей
-        axios.get<ResponseType>(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`).then((res) => {
-            this.props.setUsers(res.data.items)
-            this.props.setIsFetching(false)
-        })
-
+        usersApi.getUsers(currentPage, this.props.pageSize)
+            .then((res) => {
+                this.props.setUsers(res.data.items)
+                this.props.setIsFetching(false)
+            })
     }
+
     render() {
         return (
             <>

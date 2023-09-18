@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './Users.module.css'
 import avatar from '../../assets/images/avatar.jpg'
 import {NavLink} from 'react-router-dom';
-import {UsersType} from './UsersAPICLassComponent';
+import axios from 'axios';
+import {UsersType} from '../../api/api';
 
 type UsersPropsType = {
     users: UsersType[]
@@ -44,11 +45,28 @@ export const Users = (props: UsersPropsType) => {
                         </span>
                         <span>{el.followed ?
                             <button onClick={() => {
-                                props.unFollow(el.id)
-                            }}>Unfollow</button> :
+                                axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`, {
+                                    withCredentials:true,
+                                    headers: {'API-KEY': '2eab2f94-9550-4fb4-b555-b5306f680904'}
+                                })
+                                    .then(res=> {
+                                        if (res.data.resultCode === 0) {
+                                            props.unFollow(el.id)
+                                        }
+                                    })
+                                }
+                            }>Unfollow</button> :
                             <button onClick={() => {
-                                props.follow(el.id)
-                            }}>Follow</button>}</span>
+                                axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`, {}, {
+                                    withCredentials: true,
+                                    headers: {'API-KEY': '2eab2f94-9550-4fb4-b555-b5306f680904'}
+                                })
+                                    .then(res => {
+                                        if (res.data.resultCode === 0) {
+                                            props.follow(el.id)
+                                        }
+                                    });
+                                }}>Follow</button>}</span>
                         <div>{el.name}</div>
                         <div>{el.status}</div>
                     </li>

@@ -1,4 +1,4 @@
-import {UsersType} from '../componets/Users/UsersAPICLassComponent';
+import {UsersType} from '../api/api';
 
 
 type InitialStateType = {
@@ -14,7 +14,7 @@ let initialState = {
     pageSize: 5, // страниц на ui
     totalCount: 0, // сколько пользователей на странице
     currentPage: 1,// текущая страница
-    isFetching: false
+    isFetching: false // загрузка
 }
 
 
