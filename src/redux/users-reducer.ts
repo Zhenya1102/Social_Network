@@ -1,5 +1,29 @@
-import {UsersType} from '../api/api';
+export type FollowType = {
+    data: {}
+    messages: string[]
+    fieldsErrors: []
+    resultCode: number
+}
 
+
+export type ResponseType = {
+    items: UsersType[]
+    totalCount: number
+    error: null
+}
+export type UsersType = {
+    name: string
+    id: number
+    uniqueUrlName: null | string
+    photos: PhotosType
+    status: null | string
+    followed: boolean
+}
+
+type PhotosType = {
+    small: null | string,
+    large: null | string
+}
 
 type InitialStateType = {
     users: UsersType[]
@@ -7,6 +31,7 @@ type InitialStateType = {
     totalCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: number[]
 }
 
 let initialState = {
@@ -14,7 +39,8 @@ let initialState = {
     pageSize: 5, // страниц на ui
     totalCount: 0, // сколько пользователей на странице
     currentPage: 1,// текущая страница
-    isFetching: false // загрузка
+    isFetching: false,// загрузка
+    followingInProgress: []
 }
 
 
@@ -38,11 +64,23 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
         case 'SET-IS-FETCHING': { // работа загрузки
             return {...state, isFetching: action.isFetching}
         }
+        case 'FOLLOWING-IN-PROGRESS': {
+            return {...state, followingInProgress:action.followingInProgress ?
+                    [...state.followingInProgress, action.userId] :
+                    state.followingInProgress.filter(id=> id !== action.userId)}
+        }
     }
     return state
 }
 
-type ActionType = SetUsers | FollowAC | UnFollowAC | SetCurrentPage | SetTotalUserCount | SetIsFetching
+type ActionType =
+    SetUsers |
+    FollowAC |
+    UnFollowAC |
+    SetCurrentPage |
+    SetTotalUserCount |
+    SetIsFetching |
+    FollowingInProgress
 
 type FollowAC = ReturnType<typeof follow>
 export const follow = (id: number) => ({type: 'FOLLOW', id,} as const)
@@ -62,3 +100,10 @@ export const setTotalUserCount = (totalCount: number) => ({type: 'SET-TOTAL-USER
 
 export type SetIsFetching = ReturnType<typeof setIsFetching>
 export const setIsFetching = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)
+
+export type FollowingInProgress = ReturnType<typeof toggleFollowingInProgress>
+export const toggleFollowingInProgress = (followingInProgress: boolean, userId:number) => ({
+    type: 'FOLLOWING-IN-PROGRESS',
+    followingInProgress,
+    userId
+} as const)

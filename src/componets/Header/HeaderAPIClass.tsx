@@ -1,7 +1,8 @@
 import React from 'react';
 import {Header} from './Header';
-import axios from 'axios';
-import {AuthResponseType, DataType} from '../../redux/auth-reducer';
+import {DataType} from '../../redux/auth-reducer';
+import {socialNetworkApi} from '../../api/api';
+import {Values} from '../common/Utils/utils';
 
 
 
@@ -17,11 +18,9 @@ export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
 
 export class HeaderAPIClass extends React.Component<ProfileClassPropsType > {
     componentDidMount() {
-        axios.get<AuthResponseType>(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-            withCredentials: true
-        })
+        socialNetworkApi.setAuth()
             .then((res) => {
-                if (res.data.resultCode === 0) {
+                if (res.data.resultCode === Values.ResultsCode) {
                     this.props.setAuthUserData(res.data.data)
                 }
             })

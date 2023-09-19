@@ -2,6 +2,7 @@ import React from 'react';
 import {Profile} from './Profile';
 import axios from 'axios';
 import {RouteComponentProps} from 'react-router-dom';
+import {socialNetworkApi} from '../../api/api';
 
 
 export type ProfileResponseType = {
@@ -55,12 +56,11 @@ export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
     componentDidMount() {
         this.props.setIsFetching(true)
         let userId = this.props.match.params.userId;
-        axios.get<ProfileResponseType>(`https://social-network.samuraijs.com/api/1.0/profile/${userId || 29302}`)
+        socialNetworkApi.getProfile(userId)
             .then(res => {
                 this.props.setProfile(res.data)
                 this.props.setIsFetching(false)
             })
-
     }
 
     render() {

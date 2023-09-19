@@ -1,8 +1,8 @@
 import React from 'react';
 import {Users} from './Users';
 import {Preloader} from '../common/Preloader/Preloader';
-import {usersApi, UsersType} from '../../api/api';
-
+import {socialNetworkApi} from '../../api/api';
+import { UsersType} from '../../redux/users-reducer';
 
 
 type UsersClassPropsType = {
@@ -17,22 +17,25 @@ type UsersClassPropsType = {
     setTotalUserCount: (totalCount: number) => void
     setIsFetching: (isFetching: boolean) => void
     isFetching: boolean
+    toggleFollowingInProgress: (followingInProgress: boolean, userId:number) => void
+    followingInProgress: number[]
 }
 
 export class UsersAPICLassComponent extends React.Component<UsersClassPropsType> {
     componentDidMount() {
         this.props.setIsFetching(true)
-        usersApi.getUsers(this.props.currentPage, this.props.pageSize)
+        socialNetworkApi.getUsers(this.props.currentPage, this.props.pageSize)
             .then((res) => {
                 this.props.setUsers(res.data.items)
                 this.props.setTotalUserCount(res.data.totalCount)
                 this.props.setIsFetching(false)
             }) // сделали первый запрос на сервер о получении данных
     }
+
     onPageChangedClick = (currentPage: number) => {
         this.props.setIsFetching(true)
         this.props.setCurrentPage(currentPage) // изменяем текущую страничку пользователей
-        usersApi.getUsers(currentPage, this.props.pageSize)
+        socialNetworkApi.getUsers(currentPage, this.props.pageSize)
             .then((res) => {
                 this.props.setUsers(res.data.items)
                 this.props.setIsFetching(false)
@@ -51,6 +54,8 @@ export class UsersAPICLassComponent extends React.Component<UsersClassPropsType>
                     follow={this.props.follow}
                     unFollow={this.props.unFollow}
                     onPageChangedClick={this.onPageChangedClick}
+                    toggleFollowingInProgress={this.props.toggleFollowingInProgress}
+                    followingInProgress={this.props.followingInProgress}
                 />
             </>
         );
