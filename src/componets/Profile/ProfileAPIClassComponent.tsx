@@ -1,6 +1,5 @@
 import React from 'react';
 import {Profile} from './Profile';
-import axios from 'axios';
 import {RouteComponentProps} from 'react-router-dom';
 import {socialNetworkApi} from '../../api/api';
 
