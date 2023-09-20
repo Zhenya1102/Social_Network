@@ -9,6 +9,7 @@ import {DialogsContainer} from './componets/Dialogs/DialogsContainer';
 import {UsersContainer} from './componets/Users/UsersContainer';
 import {ProfileContainer} from './componets/Profile/ProfileContainer';
 import {HeaderContainer} from './componets/Header/HeaderContainer';
+import {Login} from './componets/Login/Login';
 
 
 
@@ -29,6 +30,7 @@ function App() {
                     <Route path={'/news'} render={() => <News/>}/>
                     <Route path={'/music'} render={() => <Music/>}/>
                     <Route path={'/settings'} render={() => <Settings/>}/>
+                    <Route path={'/login'} render={() => <Login/>}/>
                 </Switch>
             </div>
         </div>

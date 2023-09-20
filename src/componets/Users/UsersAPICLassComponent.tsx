@@ -1,8 +1,8 @@
 import React from 'react';
 import {Users} from './Users';
 import {Preloader} from '../common/Preloader/Preloader';
-import {socialNetworkApi} from '../../api/api';
-import { UsersType} from '../../redux/users-reducer';
+import {UsersType} from '../../redux/users-reducer';
+import {Redirect} from 'react-router-dom';
 
 
 type UsersClassPropsType = {
@@ -10,39 +10,24 @@ type UsersClassPropsType = {
     pageSize: number
     totalCount: number
     currentPage: number
-    follow: (id: number) => void
-    unFollow: (id: number) => void
-    setUsers: (users: UsersType[]) => void
-    setCurrentPage: (currentPage: number) => void
-    setTotalUserCount: (totalCount: number) => void
-    setIsFetching: (isFetching: boolean) => void
+    followTC: (id: number) => void
+    unFollowTC: (id: number) => void
     isFetching: boolean
-    toggleFollowingInProgress: (followingInProgress: boolean, userId:number) => void
     followingInProgress: number[]
+    getUsers: (currentPage: number, pageSize: number) => void
+    isAuth: boolean
 }
 
 export class UsersAPICLassComponent extends React.Component<UsersClassPropsType> {
     componentDidMount() {
-        this.props.setIsFetching(true)
-        socialNetworkApi.getUsers(this.props.currentPage, this.props.pageSize)
-            .then((res) => {
-                this.props.setUsers(res.data.items)
-                this.props.setTotalUserCount(res.data.totalCount)
-                this.props.setIsFetching(false)
-            }) // сделали первый запрос на сервер о получении данных
+        this.props.getUsers(this.props.currentPage, this.props.pageSize) // сделали первый запрос на сервер о получении данных
     }
 
     onPageChangedClick = (currentPage: number) => {
-        this.props.setIsFetching(true)
-        this.props.setCurrentPage(currentPage) // изменяем текущую страничку пользователей
-        socialNetworkApi.getUsers(currentPage, this.props.pageSize)
-            .then((res) => {
-                this.props.setUsers(res.data.items)
-                this.props.setIsFetching(false)
-            })
+        this.props.getUsers(currentPage, this.props.pageSize) // изменяем текущую страничку пользователей
     }
-
     render() {
+        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <>
                 {this.props.isFetching ? <Preloader/> : null}
@@ -51,10 +36,10 @@ export class UsersAPICLassComponent extends React.Component<UsersClassPropsType>
                     pageSize={this.props.pageSize}
                     totalCount={this.props.totalCount}
                     currentPage={this.props.currentPage}
-                    follow={this.props.follow}
-                    unFollow={this.props.unFollow}
+                    followTC={this.props.followTC}
+                    unFollowTC={this.props.unFollowTC}
                     onPageChangedClick={this.onPageChangedClick}
-                    toggleFollowingInProgress={this.props.toggleFollowingInProgress}
+                    // toggleFollowingInProgress={this.props.toggleFollowingInProgress}
                     followingInProgress={this.props.followingInProgress}
                 />
             </>

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Profile} from './Profile';
-import {RouteComponentProps} from 'react-router-dom';
-import {socialNetworkApi} from '../../api/api';
+import {Redirect, RouteComponentProps} from 'react-router-dom';
 
 
 export type ProfileResponseType = {
@@ -37,10 +36,10 @@ type PathParamsType = {
 export type MapStatePropsType = {
     profile: null | ProfileResponseType
     isFetching: boolean
+    isAuth: boolean
 }
 export type MapDispatchPropsType = {
-    setProfile: (profile: ProfileResponseType) => void
-    setIsFetching: (isFetching: boolean) => void
+    getProfileTC: (userId: string) => void
 }
 
 export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
@@ -48,21 +47,15 @@ export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
 type CommonPropsType = RouteComponentProps<PathParamsType> & ProfileClassPropsType
 
 
-// 1 ) делаем запрос авторизации (мы это или не мы). В ответе получаем профайл (в котором сидит айдишка)
-
 export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
 
     componentDidMount() {
-        this.props.setIsFetching(true)
         let userId = this.props.match.params.userId;
-        socialNetworkApi.getProfile(userId)
-            .then(res => {
-                this.props.setProfile(res.data)
-                this.props.setIsFetching(false)
-            })
+        this.props.getProfileTC(userId)
     }
 
     render() {
+        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <div>
                 <Profile profile={this.props.profile}/>

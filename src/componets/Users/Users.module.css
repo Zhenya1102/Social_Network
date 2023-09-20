@@ -16,3 +16,6 @@ span img {
     font-weight: bold;
     color: #b4270b;
 }
+button:disabled {
+    background-color: #494545;
+}

@@ -1,4 +1,7 @@
 import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
+import {AppDispatch} from './redux-store';
+import {socialNetworkApi} from '../api/api';
+import {setIsFetching} from './users-reducer';
 
 type PostsType = {
     id: number
@@ -61,3 +64,13 @@ export const updateNewPostTextAC = (text: string) => ({type: 'UPDATE-NEW-POST-TE
 
 export type SetProfile = ReturnType<typeof setProfile>
 export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PROFILE', profile} as const)
+
+//thunks
+export const getProfileTC = (userId:string) => (dispatch: AppDispatch) => {
+    dispatch(setIsFetching(true))
+    socialNetworkApi.getProfile(userId)
+        .then(res => {
+            dispatch(setProfile(res.data))
+            dispatch(setIsFetching(false))
+        })
+}

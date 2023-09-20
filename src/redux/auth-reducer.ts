@@ -1,3 +1,8 @@
+import {AppDispatch} from './redux-store';
+import {socialNetworkApi} from '../api/api';
+import {Values} from '../componets/common/Utils/utils';
+import {setIsFetching} from './users-reducer';
+
 export type AuthResponseType = {
     data:  DataType
     messages: string []
@@ -38,9 +43,21 @@ export const authReducer = (state: initialStatePropsType = initialState, action:
     }
 }
 
-
 type ActionType = SetAuthUserData
 
 // Actions
 type SetAuthUserData = ReturnType<typeof setAuthUserData>
 export const setAuthUserData = (data: DataType) => ({type: 'SET-USER-DATA', data} as const)
+
+
+//thunks
+export const getAuthTC = () => (dispatch:AppDispatch) => {
+    dispatch(setIsFetching(true))
+    socialNetworkApi.setAuth()
+        .then((res) => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(setAuthUserData(res.data.data))
+                dispatch(setIsFetching(false))
+            }
+        })
+}

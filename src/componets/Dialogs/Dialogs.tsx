@@ -3,6 +3,7 @@ import s from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
 import {DialogsType, MessagesType} from '../../redux/store';
+import {Redirect} from 'react-router-dom';
 
 
 type DialogsPropsType = {
@@ -11,6 +12,7 @@ type DialogsPropsType = {
     newMessageBody: string
     updateNewMessageBody: (body: string) => void
     sendMessage: () => void
+    isAuth: boolean
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
@@ -26,6 +28,8 @@ export const Dialogs = (props: DialogsPropsType) => {
         let body = event.currentTarget.value
         props.updateNewMessageBody(body)
     }
+    if (!props.isAuth) return <Redirect to={'/login'}/> // если нет регистрации - редирект на login
+
     return (
         <div className={s.dialogsContainer}>
             <ul className={s.dialogs__list}>

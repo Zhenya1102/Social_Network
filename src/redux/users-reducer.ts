@@ -1,3 +1,7 @@
+import {AppDispatch} from './redux-store';
+import {socialNetworkApi} from '../api/api';
+import {Values} from '../componets/common/Utils/utils';
+
 export type FollowType = {
     data: {}
     messages: string[]
@@ -65,9 +69,11 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
             return {...state, isFetching: action.isFetching}
         }
         case 'FOLLOWING-IN-PROGRESS': {
-            return {...state, followingInProgress:action.followingInProgress ?
+            return {
+                ...state, followingInProgress: action.followingInProgress ?
                     [...state.followingInProgress, action.userId] :
-                    state.followingInProgress.filter(id=> id !== action.userId)}
+                    state.followingInProgress.filter(id => id !== action.userId)
+            }
         }
     }
     return state
@@ -102,8 +108,42 @@ export type SetIsFetching = ReturnType<typeof setIsFetching>
 export const setIsFetching = (isFetching: boolean) => ({type: 'SET-IS-FETCHING', isFetching} as const)
 
 export type FollowingInProgress = ReturnType<typeof toggleFollowingInProgress>
-export const toggleFollowingInProgress = (followingInProgress: boolean, userId:number) => ({
+export const toggleFollowingInProgress = (followingInProgress: boolean, userId: number) => ({
     type: 'FOLLOWING-IN-PROGRESS',
     followingInProgress,
     userId
 } as const)
+
+
+// DAL level
+// ThunkCreator(data) => Thunk => dispatch
+export const getUsers = (currentPage: number, pageSize: number) => (dispatch: AppDispatch) => {
+    dispatch(setIsFetching(true))
+    socialNetworkApi.getUsers(currentPage, pageSize)
+        .then((res) => {
+            dispatch(setUsers(res.data.items))
+            dispatch(setTotalUserCount(res.data.totalCount))
+            dispatch(setIsFetching(false))
+        }) // сделали первый запрос на сервер о получении данных
+}
+
+export const followTC = (id: number) => (dispatch: AppDispatch) => { // подписка
+    dispatch(toggleFollowingInProgress(true, id))
+    socialNetworkApi.setFollowed(id)
+        .then(res => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(follow(id))
+            }
+            dispatch(toggleFollowingInProgress(false, id))
+        });
+}
+export const unFollowTC = (id: number) => (dispatch: AppDispatch) => { // отписка
+    dispatch(toggleFollowingInProgress(true, id))
+    socialNetworkApi.unFollowed(id)
+        .then(res => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(unFollow(id))
+            }
+            dispatch(toggleFollowingInProgress(false, id))
+        });
+}
