@@ -15,7 +15,6 @@ type UsersClassPropsType = {
     isFetching: boolean
     followingInProgress: number[]
     getUsers: (currentPage: number, pageSize: number) => void
-    isAuth: boolean
 }
 
 export class UsersAPICLassComponent extends React.Component<UsersClassPropsType> {
@@ -26,8 +25,8 @@ export class UsersAPICLassComponent extends React.Component<UsersClassPropsType>
     onPageChangedClick = (currentPage: number) => {
         this.props.getUsers(currentPage, this.props.pageSize) // изменяем текущую страничку пользователей
     }
+
     render() {
-        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <>
                 {this.props.isFetching ? <Preloader/> : null}
@@ -39,7 +38,6 @@ export class UsersAPICLassComponent extends React.Component<UsersClassPropsType>
                     followTC={this.props.followTC}
                     unFollowTC={this.props.unFollowTC}
                     onPageChangedClick={this.onPageChangedClick}
-                    // toggleFollowingInProgress={this.props.toggleFollowingInProgress}
                     followingInProgress={this.props.followingInProgress}
                 />
             </>

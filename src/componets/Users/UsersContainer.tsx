@@ -6,6 +6,8 @@ import {
     follow, followTC, getUsers,
     unFollow, unFollowTC
 } from '../../redux/users-reducer';
+import {withAuthRedirect} from '../../hoc/withAuthRedirect';
+import {compose} from 'redux';
 
 
 const mapStateToProps = (state: AppRootState) => {
@@ -16,14 +18,14 @@ const mapStateToProps = (state: AppRootState) => {
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
         followingInProgress: state.usersPage.followingInProgress,
-        isAuth: state.auth.isAuth
     }
 }
 
-export const UsersContainer = connect(mapStateToProps, {
+
+export default compose<React.ComponentType>(connect(mapStateToProps, {
     follow,
     unFollow,
     getUsers, // ThunkCreator
     followTC,
     unFollowTC
-})(UsersAPICLassComponent);
+}), withAuthRedirect)(UsersAPICLassComponent)

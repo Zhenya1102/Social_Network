@@ -1,6 +1,6 @@
 import React from 'react';
 import {Profile} from './Profile';
-import {Redirect, RouteComponentProps} from 'react-router-dom';
+import { RouteComponentProps} from 'react-router-dom';
 
 
 export type ProfileResponseType = {
@@ -36,7 +36,6 @@ type PathParamsType = {
 export type MapStatePropsType = {
     profile: null | ProfileResponseType
     isFetching: boolean
-    isAuth: boolean
 }
 export type MapDispatchPropsType = {
     getProfileTC: (userId: string) => void
@@ -55,7 +54,6 @@ export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
     }
 
     render() {
-        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <div>
                 <Profile profile={this.props.profile}/>
@@ -63,4 +61,5 @@ export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
         );
     }
 }
+
 

@@ -5,14 +5,11 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {News} from './componets/News/News';
 import {Music} from './componets/Music/Music';
 import {Settings} from './componets/Settings/Settings';
-import {DialogsContainer} from './componets/Dialogs/DialogsContainer';
-import {UsersContainer} from './componets/Users/UsersContainer';
-import {ProfileContainer} from './componets/Profile/ProfileContainer';
 import {HeaderContainer} from './componets/Header/HeaderContainer';
 import {Login} from './componets/Login/Login';
-
-
-
+import ProfileContainer from './componets/Profile/ProfileContainer';
+import DialogsContainer from './componets/Dialogs/DialogsContainer';
+import UsersContainer from './componets/Users/UsersContainer';
 
 
 function App() {
@@ -22,10 +19,9 @@ function App() {
             <NavBar/>
             <div className="appWrapperContent">
                 <Switch>
-                    <Route exact path='/' render={() => <Redirect to='/profile'/>}/>
+                    <Route exact path="/" render={() => <Redirect to="/profile"/>}/>
                     <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}/>
                     <Route path={'/dialogs'} render={() => <DialogsContainer/>}/>
-
                     <Route path={'/users'} render={() => <UsersContainer/>}/>
                     <Route path={'/news'} render={() => <News/>}/>
                     <Route path={'/music'} render={() => <Music/>}/>
