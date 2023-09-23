@@ -6,6 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {usersReducer} from './users-reducer';
 import {authReducer} from './auth-reducer';
 import thunkMiddleware from 'redux-thunk';
+import {reducer as formReducer} from 'redux-form';
 
 
 // объединяя reducer-ы с помощью combineReducers,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({ // отдаем наши reducers
     dialogsPage: dialogsReducer,
     sideBar: sidebarReducer,
     usersPage: usersReducer,
-    auth: authReducer
+    auth: authReducer,
+    form: formReducer
 })
 // непосредственно создаём store
 

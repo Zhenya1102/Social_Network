@@ -1,7 +1,8 @@
 import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
 import {AppDispatch} from './redux-store';
-import {socialNetworkApi} from '../api/api';
+import {profileApi, socialNetworkApi} from '../api/api';
 import {setIsFetching} from './users-reducer';
+import {Values} from '../componets/common/Utils/utils';
 
 type PostsType = {
     id: number
@@ -14,6 +15,12 @@ type InitialStateType = {
     newPostText: string
     profile: null | ProfileResponseType
     isFetching: false
+    status: string
+}
+export type StatusResponseType = {
+    resultCode: number
+    messages: string[]
+    data: {}
 }
 
 const initialState: InitialStateType = {
@@ -25,6 +32,7 @@ const initialState: InitialStateType = {
     newPostText: 'I am Samurai',
     profile: null,
     isFetching: false,
+    status: '',
 }
 
 
@@ -45,6 +53,9 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case 'UPDATE-NEW-POST-TEXT': {
             return {...state, newPostText: action.newText}
         }
+        case 'SET-STATUS': {
+            return {...state, status: action.status}
+        }
         default: {
             return state
         }
@@ -53,7 +64,7 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 
 
 // action ProfilePage
-type ActionType = SetProfile | AddPostAC | UpdateNewPostTextAC
+type ActionType = SetProfile | AddPostAC | UpdateNewPostTextAC | SetStatus
 
 type AddPostAC = ReturnType<typeof addPostAC>
 export const addPostAC = () => ({type: 'ADD-POST'} as const)
@@ -65,12 +76,31 @@ export const updateNewPostTextAC = (text: string) => ({type: 'UPDATE-NEW-POST-TE
 export type SetProfile = ReturnType<typeof setProfile>
 export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PROFILE', profile} as const)
 
+export type SetStatus = ReturnType<typeof setStatus>
+export const setStatus = (status: string) => ({type: 'SET-STATUS', status} as const)
+
 //thunks
-export const getProfileTC = (userId:string) => (dispatch: AppDispatch) => {
+export const getProfileTC = (userId: string) => (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
     socialNetworkApi.getProfile(userId)
         .then(res => {
             dispatch(setProfile(res.data))
             dispatch(setIsFetching(false))
+        })
+}
+
+export const getStatusTC = (userId:string) => (dispatch: AppDispatch) => {
+    profileApi.getStatus(userId)
+        .then(res => {
+            dispatch(setStatus(res.data))
+        })
+}
+
+export const updateStatusTC = (status:string) => (dispatch: AppDispatch) => {
+    profileApi.updateStatus(status)
+        .then(res => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(setStatus(status))
+            }
         })
 }

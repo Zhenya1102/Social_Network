@@ -1,6 +1,6 @@
 import React from 'react';
 import {Profile} from './Profile';
-import { RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 
 
 export type ProfileResponseType = {
@@ -36,9 +36,12 @@ type PathParamsType = {
 export type MapStatePropsType = {
     profile: null | ProfileResponseType
     isFetching: boolean
+    status: string
 }
 export type MapDispatchPropsType = {
     getProfileTC: (userId: string) => void
+    getStatusTC: (userId: string) => void
+    updateStatusTC: (status: string) => void
 }
 
 export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
@@ -49,14 +52,18 @@ type CommonPropsType = RouteComponentProps<PathParamsType> & ProfileClassPropsTy
 export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
 
     componentDidMount() {
+
         let userId = this.props.match.params.userId;
-        this.props.getProfileTC(userId)
+        userId ? this.props.getProfileTC(userId) : this.props.getProfileTC('29302')
+
+        userId ? this.props.getStatusTC(userId) : this.props.getStatusTC('29302')
     }
 
     render() {
         return (
             <div>
-                <Profile profile={this.props.profile}/>
+                <Profile profile={this.props.profile} status={this.props.status}
+                         updateStatusTC={this.props.updateStatusTC}/>
             </div>
         );
     }

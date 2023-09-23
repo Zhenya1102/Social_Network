@@ -2,6 +2,7 @@ import axios from 'axios';
 import {AuthResponseType} from '../redux/auth-reducer';
 import {FollowType, ResponseType} from '../redux/users-reducer';
 import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
+import {StatusResponseType} from '../redux/profile-reducer';
 
 
 const instance = axios.create({
@@ -25,7 +26,19 @@ export const socialNetworkApi = {
     setFollowed(id: number) {
         return instance.post<FollowType>(`/follow/${id}`, {}) // подписка
     },
-    getProfile(userId:string) {
-        return instance.get<ProfileResponseType>(`/profile/${userId || 29302}`) // получаем профиль по id
+    getProfile(userId: string) {
+        return instance.get<ProfileResponseType>(`/profile/${userId}`) // получаем профиль по id
+    }
+}
+
+export const profileApi = {
+    getProfile(userId: string) {
+        return instance.get<ProfileResponseType>(`/profile/${userId}`)
+    },
+    getStatus(userId: string) {
+        return instance.get<string>(`/profile/status/${userId}`)
+    },
+    updateStatus(status: string) {
+        return instance.put<StatusResponseType>(`/profile/status`, {status})
     }
 }
