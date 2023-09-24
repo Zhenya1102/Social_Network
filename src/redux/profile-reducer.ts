@@ -12,7 +12,6 @@ type PostsType = {
 
 type InitialStateType = {
     posts: PostsType[]
-    newPostText: string
     profile: null | ProfileResponseType
     isFetching: false
     status: string
@@ -29,7 +28,6 @@ const initialState: InitialStateType = {
         {id: 2, message: 'It`s my first post', likesCount: '23'},
         {id: 3, message: 'Good day', likesCount: '15'}
     ],
-    newPostText: 'I am Samurai',
     profile: null,
     isFetching: false,
     status: '',
@@ -44,14 +42,11 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case 'ADD-POST': {
             const newPost = {
                 id: 5,
-                message: state.newPostText,
+                message: action.newPostText,
                 likesCount: '4'
             }
             const newPosts = [newPost, ...state.posts]
-            return {...state, posts: newPosts, newPostText: ''}
-        }
-        case 'UPDATE-NEW-POST-TEXT': {
-            return {...state, newPostText: action.newText}
+            return {...state, posts: newPosts}
         }
         case 'SET-STATUS': {
             return {...state, status: action.status}
@@ -64,14 +59,10 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 
 
 // action ProfilePage
-type ActionType = SetProfile | AddPostAC | UpdateNewPostTextAC | SetStatus
+type ActionType = SetProfile | AddPostAC |  SetStatus
 
 type AddPostAC = ReturnType<typeof addPostAC>
-export const addPostAC = () => ({type: 'ADD-POST'} as const)
-
-type UpdateNewPostTextAC = ReturnType<typeof updateNewPostTextAC>
-export const updateNewPostTextAC = (text: string) => ({type: 'UPDATE-NEW-POST-TEXT', newText: text} as const)
-
+export const addPostAC = (newPostText:string) => ({type: 'ADD-POST', newPostText} as const)
 
 export type SetProfile = ReturnType<typeof setProfile>
 export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PROFILE', profile} as const)

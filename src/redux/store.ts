@@ -74,7 +74,7 @@ export const store = { // store OOP - object
 
     dispatch(action: { type: any, newText?: string, body?:string }) {
         // profileReducer(this._state.profilePage, action)
-        dialogsReducer(this._state.dialogsPage, action)
+        // dialogsReducer(this._state.dialogsPage, action)
         sidebarReducer(this._state.sideBar, action)
         this._callSubscriber(this._state)
     }
