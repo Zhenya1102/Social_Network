@@ -1,12 +1,12 @@
 import {AppDispatch} from './redux-store';
-import {socialNetworkApi} from '../api/api';
+import {authApi} from '../api/api';
 import {Values} from '../componets/common/Utils/utils';
 import {setIsFetching} from './users-reducer';
 
 export type AuthResponseType = {
-    data:  DataType
+    data: DataType
     messages: string []
-    fieldsErrors: []
+    fieldsErrors?: []
     resultCode: number
 }
 
@@ -34,7 +34,7 @@ const initialState = {
 export const authReducer = (state: initialStatePropsType = initialState, action: ActionType): initialStatePropsType => {
     switch (action.type) {
         case 'SET-USER-DATA': {
-            return {...state, ...action.data, isAuth: true}
+            return {...state, ...action.data, isAuth: action.isAuth}
         }
         default: {
             return state
@@ -47,16 +47,38 @@ type ActionType = SetAuthUserData
 
 // Actions
 type SetAuthUserData = ReturnType<typeof setAuthUserData>
-export const setAuthUserData = (data: DataType) => ({type: 'SET-USER-DATA', data} as const)
+export const setAuthUserData = (data: DataType, isAuth: boolean) => ({type: 'SET-USER-DATA', data, isAuth} as const)
 
 
 //thunks
-export const getAuthTC = () => (dispatch:AppDispatch) => {
+export const getAuthTC = () => (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    socialNetworkApi.setAuth()
+    authApi.setAuth()
         .then((res) => {
             if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(setAuthUserData(res.data.data))
+                dispatch(setAuthUserData(res.data.data, true))
+                dispatch(setIsFetching(false))
+            }
+        })
+}
+
+export const loginTC = (email: string, password: string, rememberMe: boolean) => (dispatch: AppDispatch) => {
+    dispatch(setIsFetching(true))
+    authApi.login(email, password, rememberMe)
+        .then((res) => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(getAuthTC())
+                dispatch(setIsFetching(false))
+            }
+        })
+}
+
+export const logoutTC = () => (dispatch: AppDispatch) => {
+    dispatch(setIsFetching(true))
+    authApi.loginOut()
+        .then((res) => {
+            if (res.data.resultCode === Values.ResultsCode) {
+                dispatch(setAuthUserData({id: null, login: null, email: null}, false))
                 dispatch(setIsFetching(false))
             }
         })

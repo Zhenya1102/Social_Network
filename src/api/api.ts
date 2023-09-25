@@ -17,9 +17,6 @@ export const socialNetworkApi = {
     getUsers(currentPage: number, pageSize: number) {
         return instance.get<ResponseType>(`/users?page=${currentPage}&count=${pageSize}`) // взяли юзеров в сервера
     },
-    setAuth() { // авторизация
-        return instance.get<AuthResponseType>(`/auth/me`)
-    },
     unFollowed(id: number) {
         return instance.delete<FollowType>(`/follow/${id}`) // отписка
     },
@@ -41,4 +38,16 @@ export const profileApi = {
     updateStatus(status: string) {
         return instance.put<StatusResponseType>(`/profile/status`, {status})
     }
+}
+
+export const authApi = {
+    setAuth() { // авторизация
+        return instance.get<AuthResponseType>(`/auth/me`)
+    },
+    login(email: string, password: string, rememberMe: boolean) {
+        return instance.post(`/auth/login`, {email, password, rememberMe})
+    },
+    loginOut() {
+        return instance.delete<AuthResponseType>(`/auth/login`)
+    },
 }
