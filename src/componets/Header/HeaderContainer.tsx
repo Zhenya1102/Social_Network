@@ -1,7 +1,7 @@
 import {AppRootState} from '../../redux/redux-store';
 import {connect} from 'react-redux';
 import {HeaderAPIClass} from './HeaderAPIClass';
-import {getAuthTC, logoutTC} from '../../redux/auth-reducer';
+import {logoutTC} from '../../redux/auth-reducer';
 
 export const mapStateToProps = (state: AppRootState) => {
     return {
@@ -10,4 +10,4 @@ export const mapStateToProps = (state: AppRootState) => {
     }
 }
 
-export const HeaderContainer = connect(mapStateToProps, {getAuthTC, logoutTC})(HeaderAPIClass);
+export const HeaderContainer = connect(mapStateToProps, {logoutTC})(HeaderAPIClass);

@@ -2,6 +2,7 @@ import {AppDispatch} from './redux-store';
 import {authApi} from '../api/api';
 import {Values} from '../componets/common/Utils/utils';
 import {setIsFetching} from './users-reducer';
+import {stopSubmit} from 'redux-form';
 
 export type AuthResponseType = {
     data: DataType
@@ -69,6 +70,9 @@ export const loginTC = (email: string, password: string, rememberMe: boolean) =>
             if (res.data.resultCode === Values.ResultsCode) {
                 dispatch(getAuthTC())
                 dispatch(setIsFetching(false))
+            } else {
+                const message = res.data.messages.length > 0 ? res.data.messages[0] : 'Some Error'
+                dispatch(stopSubmit('login', {_error: message}))
             }
         })
 }

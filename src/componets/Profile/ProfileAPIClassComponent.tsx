@@ -37,6 +37,8 @@ export type MapStatePropsType = {
     profile: null | ProfileResponseType
     isFetching: boolean
     status: string
+    authorizedUserId: null | number
+    isAuth: boolean
 }
 export type MapDispatchPropsType = {
     getProfileTC: (userId: string) => void
@@ -52,18 +54,21 @@ type CommonPropsType = RouteComponentProps<PathParamsType> & ProfileClassPropsTy
 export class ProfileAPIClassComponent extends React.Component<CommonPropsType> {
 
     componentDidMount() {
-
         let userId = this.props.match.params.userId;
-        userId ? this.props.getProfileTC(userId) : this.props.getProfileTC('29302')
-
-        userId ? this.props.getStatusTC(userId) : this.props.getStatusTC('29302')
+        if (!userId) {
+            userId = String(this.props.authorizedUserId)
+        }
+        this.props.getProfileTC(userId)
+        this.props.getStatusTC(userId)
     }
 
     render() {
         return (
             <div>
-                <Profile profile={this.props.profile} status={this.props.status}
-                         updateStatusTC={this.props.updateStatusTC}/>
+                <Profile profile={this.props.profile}
+                         status={this.props.status}
+                         updateStatusTC={this.props.updateStatusTC}
+                />
             </div>
         );
     }

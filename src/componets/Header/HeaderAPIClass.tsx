@@ -11,7 +11,7 @@ export type MapStatePropsType = {
     login: string | null
 }
 export type MapDispatchPropsType = {
-    getAuthTC: () => void
+    // getAuthTC: () => void
     logoutTC:()=> void
 }
 
@@ -19,7 +19,7 @@ export type ProfileClassPropsType = MapStatePropsType & MapDispatchPropsType
 
 export class HeaderAPIClass extends React.Component<ProfileClassPropsType > {
     componentDidMount() {
-        this.props.getAuthTC()
+        // this.props.getAuthTC()
         this.props.logoutTC()
     }
 

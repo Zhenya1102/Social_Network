@@ -13,7 +13,10 @@ export const mapStateToProps = (state: AppRootState): MapStatePropsType => {
     return {
         profile: state.profilePage.profile,
         isFetching: state.profilePage.isFetching,
-        status: state.profilePage.status
+        status: state.profilePage.status,
+        authorizedUserId: state.auth.id,
+        isAuth: state.auth.isAuth
+
     }
 }
 
