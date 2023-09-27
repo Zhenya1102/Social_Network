@@ -38,7 +38,7 @@ type InitialStateType = {
     followingInProgress: number[]
 }
 
-let initialState = {
+let initialState: InitialStateType = {
     users: [],
     pageSize: 5, // страниц на ui
     totalCount: 0, // сколько пользователей на странице
@@ -60,7 +60,7 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
             return {...state, users: state.users.map(el => el.id === action.id ? {...el, followed: false} : el)}
         }
         case 'SET-CURRENT-PAGE': {
-            return {...state, currentPage: action.currentPage}
+            return {...state, currentPage: action.page}
         }
         case 'SET-TOTAL-USER-COUNT': {
             return {...state, totalCount: action.totalCount}
@@ -99,7 +99,7 @@ type SetUsers = ReturnType<typeof setUsers>
 export const setUsers = (users: UsersType[]) => ({type: 'SET-USERS', users} as const)
 
 type SetCurrentPage = ReturnType<typeof setCurrentPage>
-export const setCurrentPage = (currentPage: number) => ({type: 'SET-CURRENT-PAGE', currentPage} as const)
+export const setCurrentPage = (page: number) => ({type: 'SET-CURRENT-PAGE', page} as const)
 
 type SetTotalUserCount = ReturnType<typeof setTotalUserCount>
 export const setTotalUserCount = (totalCount: number) => ({type: 'SET-TOTAL-USER-COUNT', totalCount} as const)
@@ -117,9 +117,11 @@ export const toggleFollowingInProgress = (followingInProgress: boolean, userId: 
 
 // DAL level
 // ThunkCreator(data) => Thunk => dispatch
-export const getUsers = (currentPage: number, pageSize: number) => (dispatch: AppDispatch) => {
+
+export const requestGetUsers = (page: number, pageSize: number) => (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    socialNetworkApi.getUsers(currentPage, pageSize)
+    dispatch(setCurrentPage(page))
+    socialNetworkApi.getUsers(page, pageSize)
         .then((res) => {
             dispatch(setUsers(res.data.items))
             dispatch(setTotalUserCount(res.data.totalCount))

@@ -11,7 +11,7 @@ type MyPostsPropsType = {
     posts: PostsType[]
     addPost: (newPostText: string) => void
 }
-export const MyPosts = (props: MyPostsPropsType) => {
+export const MyPosts = React.memo((props: MyPostsPropsType) => {
 
     const onAddPost = (formData: FormDataType) => {
         if (formData.newPostText.trim() !== '') {
@@ -28,7 +28,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
             </div>
         </div>
     );
-};
+});
 
 type FormDataType = {
     newPostText: string
