@@ -10,7 +10,7 @@ type PostsType = {
     likesCount: string
 }
 
-type InitialStateType = {
+export type InitialStateType = {
     posts: PostsType[]
     profile: null | ProfileResponseType
     isFetching: false
@@ -48,6 +48,9 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             const newPosts = [newPost, ...state.posts]
             return {...state, posts: newPosts}
         }
+        case 'DELETE-POST': {
+            return {...state, posts: state.posts.filter(el => el.id !== action.postId)}
+        }
         case 'SET-STATUS': {
             return {...state, status: action.status}
         }
@@ -59,10 +62,13 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 
 
 // action ProfilePage
-type ActionType = SetProfile | AddPostAC |  SetStatus
+type ActionType = SetProfile | AddPostAC | SetStatus | DeletePost
 
 type AddPostAC = ReturnType<typeof addPostAC>
-export const addPostAC = (newPostText:string) => ({type: 'ADD-POST', newPostText} as const)
+export const addPostAC = (newPostText: string) => ({type: 'ADD-POST', newPostText} as const)
+
+type DeletePost = ReturnType<typeof deletePost>
+export const deletePost = (postId: number) => ({type: 'DELETE-POST', postId} as const)
 
 export type SetProfile = ReturnType<typeof setProfile>
 export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PROFILE', profile} as const)
@@ -71,27 +77,21 @@ export type SetStatus = ReturnType<typeof setStatus>
 export const setStatus = (status: string) => ({type: 'SET-STATUS', status} as const)
 
 //thunks
-export const getProfileTC = (userId: string) => (dispatch: AppDispatch) => {
+export const getProfileTC = (userId: string) => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    socialNetworkApi.getProfile(userId)
-        .then(res => {
-            dispatch(setProfile(res.data))
-            dispatch(setIsFetching(false))
-        })
+    const response = await socialNetworkApi.getProfile(userId)
+    dispatch(setProfile(response.data))
+    dispatch(setIsFetching(false))
 }
 
-export const getStatusTC = (userId:string) => (dispatch: AppDispatch) => {
-    profileApi.getStatus(userId)
-        .then(res => {
-            dispatch(setStatus(res.data))
-        })
+export const getStatusTC = (userId: string) => async (dispatch: AppDispatch) => {
+    const response = await profileApi.getStatus(userId)
+    dispatch(setStatus(response.data))
 }
 
-export const updateStatusTC = (status:string) => (dispatch: AppDispatch) => {
-    profileApi.updateStatus(status)
-        .then(res => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(setStatus(status))
-            }
-        })
+export const updateStatusTC = (status: string) => async (dispatch: AppDispatch) => {
+    const response = await profileApi.updateStatus(status)
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(setStatus(status))
+    }
 }

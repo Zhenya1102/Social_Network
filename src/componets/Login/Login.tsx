@@ -15,14 +15,19 @@ type FormDataType = {
     rememberMe: boolean
 }
 const maxLength = maxLengthCreator(30);
-export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+
+export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
     return (
         <div>
-            <form onSubmit={props.handleSubmit}>
-                <div><Field placeholder={'Email'} name={'email'} type="text" component={Input} validate={[required, maxLength]}/></div>
-                <div><Field placeholder={'password'} name={'password'} type="password" component={Input} validate={[required, maxLength]}/></div>
-                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required, maxLength]}/>remember me</div>
-                {props.error && <div className={style.formSummaryError}>{props.error}</div>}
+            <form onSubmit={handleSubmit}>
+                <div><Field placeholder={'Email'} name={'email'} type="text" component={Input}
+                            validate={[required, maxLength]}/></div>
+                <div><Field placeholder={'password'} name={'password'} type="password" component={Input}
+                            validate={[required, maxLength]}/></div>
+                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required, maxLength]}/>remember
+                    me
+                </div>
+                {error && <div className={style.formSummaryError}>{error}</div>}
                 <div>
                     <button>Submit</button>
                 </div>
@@ -34,11 +39,11 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
 type LoginPropsType = {
-    loginTC:(email: string, password: string, rememberMe: boolean) => void
+    loginTC: (email: string, password: string, rememberMe: boolean) => void
     isAuth: boolean
 }
 
-export const Login = (props:LoginPropsType) => {
+export const Login = (props: LoginPropsType) => {
     const onSubmit = (formData: FormDataType) => {
         props.loginTC(formData.email, formData.password, formData.rememberMe)
     }
@@ -52,7 +57,7 @@ export const Login = (props:LoginPropsType) => {
         </div>
     );
 };
-const mapStateToProps = (state:AppRootState) => ({isAuth: state.auth.isAuth})
+const mapStateToProps = (state: AppRootState) => ({isAuth: state.auth.isAuth})
 export default connect(mapStateToProps, {loginTC})(Login)
 
 

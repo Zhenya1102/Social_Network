@@ -1,8 +1,7 @@
 import React from 'react';
 import {Users} from './Users';
 import {Preloader} from '../common/Preloader/Preloader';
-import { UsersType} from '../../redux/users-reducer';
-
+import {UsersType} from '../../redux/users-reducer';
 
 
 type UsersClassPropsType = {
@@ -19,11 +18,13 @@ type UsersClassPropsType = {
 
 export class UsersAPICLassComponent extends React.Component<UsersClassPropsType> {
     componentDidMount() {
-        this.props.requestGetUsers(this.props.currentPage, this.props.pageSize) // сделали первый запрос на сервер о получении данных
+        const {currentPage, pageSize} = this.props
+        this.props.requestGetUsers(currentPage, pageSize) // сделали первый запрос на сервер о получении данных
     }
 
     onPageChangedClick = (currentPage: number) => {
-        this.props.requestGetUsers(currentPage, this.props.pageSize) // изменяем текущую страничку пользователей
+        const {pageSize} = this.props
+        this.props.requestGetUsers(currentPage, pageSize) // изменяем текущую страничку пользователей
     }
 
     render() {

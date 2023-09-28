@@ -11,8 +11,8 @@ type ProfileInfoPropsType = {
     updateStatusTC:(status:string) => void
 }
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
-    if (!props.profile) {
+export const ProfileInfo:React.FC<ProfileInfoPropsType> = ({profile,status, updateStatusTC }) => {
+    if (!profile) {
         return <Preloader/>
     }
     return (
@@ -21,12 +21,12 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                 <img className={s.content__image} src={'https://s.ek.ua/posts/files/2536/wide_pic.jpg'} alt={'avatar'}/>
             </div>
             <div>
-                {props.profile.photos.large ? <img src={props.profile.photos.large} alt="photoLarge"/> : <div>No photo</div>}
-                <div>{props.profile.fullName}: NAME</div>
-                <div>{props.profile.aboutMe}: ABOUT ME</div>
+                {profile.photos.large ? <img src={profile.photos.large} alt="photoLarge"/> : <div>No photo</div>}
+                <div>{profile.fullName}: NAME</div>
+                <div>{profile.aboutMe}: ABOUT ME</div>
                 <ProfileStatus
-                    status={props.status}
-                    updateStatusTC={props.updateStatusTC}
+                    status={status}
+                    updateStatusTC={updateStatusTC}
                 />
             </div>
         </div>

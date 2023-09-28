@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import React, {FC, InputHTMLAttributes, TextareaHTMLAttributes} from 'react';
 import style from './FormsControls.module.css'
 
 type FormControlProps<T> = {
@@ -11,26 +11,26 @@ type FormControlProps<T> = {
 };
 
 
-export const FormControl:FC<FormControlProps<any>> = ({input, meta, ...props}) => {
-    const hasError = meta.touched && meta.error
+export const FormControl: FC<FormControlProps<any>> = ({input, meta: {touched, error}, children, ...props}) => {
+    const hasError = touched && error
 
     return (
         <div className={style.formControl + ' ' + (hasError ? style.error : '')}>
-            <div>{props.children}</div>
-            {hasError && <span>{meta.error}</span>}
+            <div>{children}</div>
+            {hasError && <span>{error}</span>}
         </div>
     )
 }
 type TextareaProps = FormControlProps<TextareaHTMLAttributes<HTMLTextAreaElement>>;
 
 export const Textarea: FC<TextareaProps> = (props) => {
-    const {input, meta, ...restProps} = props
+    const {input, meta} = props
     return <FormControl {...props}><textarea {...input} {...props}/></FormControl>
 }
 type InputProps = FormControlProps<InputHTMLAttributes<HTMLInputElement>>;
 
 export const Input: FC<InputProps> = (props) => {
-    const {input, meta, ...restProps} = props
+    const {input, meta} = props
     return <FormControl {...props}><input {...input} {...props}/></FormControl>
 }
 

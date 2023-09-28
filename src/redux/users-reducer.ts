@@ -1,6 +1,7 @@
 import {AppDispatch} from './redux-store';
 import {socialNetworkApi} from '../api/api';
 import {Values} from '../componets/common/Utils/utils';
+import {updateObjectInArray} from '../utils/object-helpers';
 
 export type FollowType = {
     data: {}
@@ -55,9 +56,11 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
         }
         case 'FOLLOW': {
             return {...state, users: state.users.map(el => el.id === action.id ? {...el, followed: true} : el)}
+            // return  {...state, users: updateObjectInArray(state.users, action.id, 'id', {followed: true})}
         }
         case 'UNFOLLOW': {
             return {...state, users: state.users.map(el => el.id === action.id ? {...el, followed: false} : el)}
+            // return  {...state, users: updateObjectInArray(state.users, action.id, 'id', {followed: false})}
         }
         case 'SET-CURRENT-PAGE': {
             return {...state, currentPage: action.page}
@@ -118,34 +121,32 @@ export const toggleFollowingInProgress = (followingInProgress: boolean, userId: 
 // DAL level
 // ThunkCreator(data) => Thunk => dispatch
 
-export const requestGetUsers = (page: number, pageSize: number) => (dispatch: AppDispatch) => {
+
+
+
+export const requestGetUsers = (page: number, pageSize: number) => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
     dispatch(setCurrentPage(page))
-    socialNetworkApi.getUsers(page, pageSize)
-        .then((res) => {
-            dispatch(setUsers(res.data.items))
-            dispatch(setTotalUserCount(res.data.totalCount))
-            dispatch(setIsFetching(false))
-        }) // сделали первый запрос на сервер о получении данных
+    const response = await socialNetworkApi.getUsers(page, pageSize)
+    dispatch(setUsers(response.data.items))
+    dispatch(setTotalUserCount(response.data.totalCount))
+    dispatch(setIsFetching(false))
+    // сделали первый запрос на сервер о получении данных
 }
 
-export const followTC = (id: number) => (dispatch: AppDispatch) => { // подписка
+const followUnfollowFlow = async (dispatch: AppDispatch, id: number, apiMethod:any, actionCreator:any ) => {
     dispatch(toggleFollowingInProgress(true, id))
-    socialNetworkApi.setFollowed(id)
-        .then(res => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(follow(id))
-            }
-            dispatch(toggleFollowingInProgress(false, id))
-        });
+    const response = await apiMethod(id)
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(actionCreator(id))
+    }
+    dispatch(toggleFollowingInProgress(false, id))
 }
-export const unFollowTC = (id: number) => (dispatch: AppDispatch) => { // отписка
-    dispatch(toggleFollowingInProgress(true, id))
-    socialNetworkApi.unFollowed(id)
-        .then(res => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(unFollow(id))
-            }
-            dispatch(toggleFollowingInProgress(false, id))
-        });
+
+export const followTC = (id: number) => async (dispatch: AppDispatch) => { // подписка
+    await followUnfollowFlow(dispatch, id, socialNetworkApi.setFollowed.bind(id), follow)
+}
+
+export const unFollowTC = (id: number) => async (dispatch: AppDispatch) => { // отписка
+    await followUnfollowFlow(dispatch, id, socialNetworkApi.unFollowed.bind(id), unFollow)
 }

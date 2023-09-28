@@ -52,38 +52,32 @@ export const setAuthUserData = (data: DataType, isAuth: boolean) => ({type: 'SET
 
 
 //thunks
-export const getAuthTC = () => (dispatch: AppDispatch) => {
+export const getAuthTC = () => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    authApi.setAuth()
-        .then((res) => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(setAuthUserData(res.data.data, true))
-                dispatch(setIsFetching(false))
-            }
-        })
+    const response = await authApi.setAuth()
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(setAuthUserData(response.data.data, true))
+        dispatch(setIsFetching(false))
+    }
 }
 
-export const loginTC = (email: string, password: string, rememberMe: boolean) => (dispatch: AppDispatch) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean) => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    authApi.login(email, password, rememberMe)
-        .then((res) => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(getAuthTC())
-                dispatch(setIsFetching(false))
-            } else {
-                const message = res.data.messages.length > 0 ? res.data.messages[0] : 'Some Error'
-                dispatch(stopSubmit('login', {_error: message}))
-            }
-        })
+    const response = await authApi.login(email, password, rememberMe)
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(getAuthTC())
+        dispatch(setIsFetching(false))
+    } else {
+        const message = response.data.messages.length > 0 ? response.data.messages[0] : 'Some Error'
+        dispatch(stopSubmit('login', {_error: message}))
+    }
 }
 
-export const logoutTC = () => (dispatch: AppDispatch) => {
+export const logoutTC = () => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
-    authApi.loginOut()
-        .then((res) => {
-            if (res.data.resultCode === Values.ResultsCode) {
-                dispatch(setAuthUserData({id: null, login: null, email: null}, false))
-                dispatch(setIsFetching(false))
-            }
-        })
+    const response = await authApi.loginOut()
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(setAuthUserData({id: null, login: null, email: null}, false))
+        dispatch(setIsFetching(false))
+    }
 }

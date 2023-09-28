@@ -3,7 +3,8 @@ import styles from './Users.module.css'
 import avatar from '../../assets/images/avatar.jpg'
 import {NavLink} from 'react-router-dom';
 import {UsersType} from '../../redux/users-reducer';
-
+import {Paginator} from '../common/Paginator/Paginator';
+import {User} from './User';
 
 
 type UsersPropsType = {
@@ -17,46 +18,30 @@ type UsersPropsType = {
     followingInProgress: number[]
 }
 
-export const Users = (props: UsersPropsType) => {
-    const pagesCount = Math.ceil(props.totalCount / props.pageSize)
-    const pages = []
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
-    }
-    if (pages.length > 40) { // сократили массив до 20 элементов, если он больше 20 элементов
-        pages.splice(40) // мутировали исходный массив
-    }
+export const Users: React.FC<UsersPropsType> = ({
+                                                    users,
+                                                    pageSize,
+                                                    totalCount,
+                                                    currentPage,
+                                                    followTC,
+                                                    unFollowTC,
+                                                    onPageChangedClick,
+                                                    followingInProgress
+                                                }) => {
     return (
         <div>
-            <ul className={styles.pages}>
-                {pages.map((el, index) => {
-                    return <li onClick={() => props.onPageChangedClick(el)}
-                               className={props.currentPage === el ? styles.selected : ''}
-                               key={index}>{el}</li>
-                })}
-            </ul>
+            <Paginator
+                pageSize={pageSize}
+                totalCount={totalCount}
+                currentPage={currentPage}
+                onPageChangedClick={onPageChangedClick}
+            />
             <ul>
-                {props.users.map(el => {
-                    return <li key={el.id}>
-                        <span>
-                            <NavLink to={'/profile/' + el.id}>
-                                <img className={styles.user_photo}
-                                     src={el.photos.small !== null ? el.photos.small : avatar}
-                                     alt="avatar"/>
-                            </NavLink>
-                        </span>
-                        <span>{el.followed ?
-                            <button disabled={props.followingInProgress.some(id => id === el.id)} onClick={() => {
-                                props.unFollowTC(el.id)
-                                }
-                            }>Unfollow</button> :
-                            <button disabled={props.followingInProgress.some(id => id === el.id)} onClick={() => {
-                                props.followTC(el.id)
-                                }}>Follow</button>}</span>
-                        <div>{el.name}</div>
-                        <div>{el.status}</div>
-                    </li>
-                })}
+                <User users={users}
+                      followingInProgress={followingInProgress}
+                      followTC={followTC}
+                      unFollowTC={unFollowTC}
+                />
             </ul>
         </div>
     );
