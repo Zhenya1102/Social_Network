@@ -18,7 +18,7 @@ import {Preloader} from './componets/common/Preloader/Preloader';
 
 
 type AppPropsType = {
-    initializeApp: ()=> void
+    initializeApp: () => void
     initialized: boolean
 }
 
@@ -52,6 +52,7 @@ class App extends React.Component<AppPropsType> {
         );
     }
 }
+
 const mapStateToProps = (state: AppRootState) => ({
     initialized: state.app.initialized
 })

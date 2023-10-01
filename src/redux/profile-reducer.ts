@@ -22,7 +22,7 @@ export type StatusResponseType = {
     data: {}
 }
 
-const initialState: InitialStateType = {
+export const initialState: InitialStateType = {
     posts: [
         {id: 1, message: 'What is your name', likesCount: '0'},
         {id: 2, message: 'It`s my first post', likesCount: '23'},

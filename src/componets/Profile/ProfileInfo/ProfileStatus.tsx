@@ -5,8 +5,6 @@ type ProfileStatusPropsType = {
     status: string
     updateStatusTC: (status: string) => void
 }
-
-
 export const ProfileStatus = (props: ProfileStatusPropsType) => {
 
     const [editMode, setEditMode] = useState<boolean>(false)

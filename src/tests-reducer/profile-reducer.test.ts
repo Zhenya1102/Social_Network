@@ -1,4 +1,4 @@
-import {addPostAC, deletePost, InitialStateType, profileReducer} from './profile-reducer';
+import {addPostAC, deletePost, InitialStateType, profileReducer} from '../redux/profile-reducer';
 // TDD - Test-Driven Development
 // 1. test data
 const initialState: InitialStateType = {

@@ -35,6 +35,7 @@ export const Users: React.FC<UsersPropsType> = ({
                 totalCount={totalCount}
                 currentPage={currentPage}
                 onPageChangedClick={onPageChangedClick}
+                portionSize={10}
             />
             <ul>
                 <User users={users}
