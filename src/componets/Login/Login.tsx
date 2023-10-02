@@ -13,10 +13,16 @@ type FormDataType = {
     email: string
     password: string
     rememberMe: boolean
+    captcha:string | null
 }
+
+type CaptchaPropsType = {
+    captchaUrl:string | null
+}
+
 const maxLength = maxLengthCreator(30);
 
-export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
+export const LoginForm: React.FC<InjectedFormProps<FormDataType, CaptchaPropsType> & CaptchaPropsType> = ({handleSubmit, error,captchaUrl}) => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -24,9 +30,11 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubm
                             validate={[required, maxLength]}/></div>
                 <div><Field placeholder={'password'} name={'password'} type="password" component={Input}
                             validate={[required, maxLength]}/></div>
-                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required, maxLength]}/>remember
+                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required]}/>remember
                     me
                 </div>
+                {captchaUrl && <img src={captchaUrl} alt="captcha"/>}
+                {captchaUrl && <div><Field placeholder={'symbols from image'} name={'captcha'} type="text" component={Input} validate={[required]}/></div>}
                 {error && <div className={style.formSummaryError}>{error}</div>}
                 <div>
                     <button>Submit</button>
@@ -36,28 +44,34 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubm
     );
 };
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<FormDataType, CaptchaPropsType>({form: 'login'})(LoginForm)
 
 type LoginPropsType = {
-    loginTC: (email: string, password: string, rememberMe: boolean) => void
+    loginTC: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
     isAuth: boolean
+    captchaUrl: string | null
 }
 
-export const Login = (props: LoginPropsType) => {
+export const Login:React.FC<LoginPropsType> = ({loginTC, isAuth,captchaUrl}) => {
     const onSubmit = (formData: FormDataType) => {
-        props.loginTC(formData.email, formData.password, formData.rememberMe)
+        loginTC(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
-    if (props.isAuth) {
+    if (isAuth) {
         return <Redirect to={'/profile'}/>
     }
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
         </div>
     );
 };
-const mapStateToProps = (state: AppRootState) => ({isAuth: state.auth.isAuth})
+const mapStateToProps = (state: AppRootState) => (
+    {
+        captchaUrl: state.auth.captchaUrl,
+        isAuth: state.auth.isAuth
+    }
+)
 export default connect(mapStateToProps, {loginTC})(Login)
 
 

@@ -1,8 +1,10 @@
 import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
-import {AppDispatch} from './redux-store';
+import {AppDispatch, AppRootState} from './redux-store';
 import {profileApi, socialNetworkApi} from '../api/api';
-import {setIsFetching} from './users-reducer';
+import {PhotosType, setIsFetching} from './users-reducer';
 import {Values} from '../componets/common/Utils/utils';
+import {ProfileFormDataType} from '../componets/Profile/ProfileInfo/ProfileDataForm';
+import {stopSubmit} from 'redux-form';
 
 type PostsType = {
     id: number
@@ -54,6 +56,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case 'SET-STATUS': {
             return {...state, status: action.status}
         }
+        case 'SAVE-PHOTO': {
+            return {...state, profile: {...state.profile, photos:action.photos} as ProfileResponseType }
+        }
+        case 'SAVE-PROFILE': {
+            return {...state, profile: action.profile}
+        }
         default: {
             return state
         }
@@ -62,7 +70,7 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 
 
 // action ProfilePage
-type ActionType = SetProfile | AddPostAC | SetStatus | DeletePost
+type ActionType = SetProfile | AddPostAC | SetStatus | DeletePost | SavePhotoSuccess | SetSavedProfile
 
 type AddPostAC = ReturnType<typeof addPostAC>
 export const addPostAC = (newPostText: string) => ({type: 'ADD-POST', newPostText} as const)
@@ -76,6 +84,12 @@ export const setProfile = (profile: ProfileResponseType) => ({type: 'SET-USER-PR
 export type SetStatus = ReturnType<typeof setStatus>
 export const setStatus = (status: string) => ({type: 'SET-STATUS', status} as const)
 
+
+export type SavePhotoSuccess = ReturnType<typeof savePhotoSuccess>
+export const savePhotoSuccess = (photos: PhotosType) => ({type:'SAVE-PHOTO', photos} as const)
+
+export type SetSavedProfile = ReturnType<typeof setSavedProfile>
+export const setSavedProfile = (profile: ProfileResponseType) => ({type:'SAVE-PROFILE', profile} as const)
 //thunks
 export const getProfileTC = (userId: string) => async (dispatch: AppDispatch) => {
     dispatch(setIsFetching(true))
@@ -93,5 +107,22 @@ export const updateStatusTC = (status: string) => async (dispatch: AppDispatch) 
     const response = await profileApi.updateStatus(status)
     if (response.data.resultCode === Values.ResultsCode) {
         dispatch(setStatus(status))
+    }
+}
+
+export const savePhotoTC = (file:File) => async(dispatch: AppDispatch) => {
+    const response = await profileApi.setSavedPhoto(file)
+    if (response.data.resultCode === Values.ResultsCode) {
+        dispatch(savePhotoSuccess(response.data.data.photos))
+    }
+}
+
+export const saveProfile = (profile:ProfileFormDataType) => async(dispatch: AppDispatch, getState:()=> AppRootState) => {
+    const userId = getState().auth.id
+    const response = await profileApi.setSavedProfile(profile)
+    if (response.data.resultCode === Values.ResultsCode) {
+        userId && await dispatch(getProfileTC(String(userId)))
+    } else {
+        dispatch(stopSubmit('edit-profile', {_error: response.data.messages[0]}))
     }
 }

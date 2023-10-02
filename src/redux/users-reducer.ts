@@ -1,10 +1,10 @@
 import {AppDispatch} from './redux-store';
 import {socialNetworkApi} from '../api/api';
 import {Values} from '../componets/common/Utils/utils';
-import {updateObjectInArray} from '../utils/object-helpers';
 
-export type FollowType = {
-    data: {}
+
+export type FollowType<D = {}> = {
+    data: D
     messages: string[]
     fieldsErrors: []
     resultCode: number
@@ -25,7 +25,7 @@ export type UsersType = {
     followed: boolean
 }
 
-type PhotosType = {
+export type PhotosType = {
     small: null | string,
     large: null | string
 }

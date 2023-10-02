@@ -2,7 +2,7 @@ import React from 'react';
 import {AppRootState} from '../../redux/redux-store';
 import {connect} from 'react-redux';
 import {MapStatePropsType, ProfileAPIClassComponent} from './ProfileAPIClassComponent';
-import {getProfileTC, getStatusTC,  updateStatusTC} from '../../redux/profile-reducer';
+import {getProfileTC, getStatusTC, savePhotoTC, saveProfile, updateStatusTC} from '../../redux/profile-reducer';
 import {withRouter} from 'react-router-dom';
 import {setIsFetching} from '../../redux/users-reducer';
 import {withAuthRedirect} from '../../hoc/withAuthRedirect';
@@ -24,5 +24,7 @@ export default compose<React.ComponentType>(connect(mapStateToProps, {
     getProfileTC,
     getStatusTC,
     updateStatusTC,
-    setIsFetching
+    setIsFetching,
+    savePhotoTC,
+    saveProfile
 }), withRouter, withAuthRedirect)(ProfileAPIClassComponent);

@@ -3,3 +3,15 @@
     height: 450px;
     border-radius: 10px;
 }
+.userPhoto {
+    max-width: 200px;
+}
+.contact {
+    padding-left: 10px;
+}
+.bold {
+    font-weight: 700;
+}
+span {
+    font-weight: 400;
+}

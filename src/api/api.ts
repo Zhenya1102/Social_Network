@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {AuthResponseType} from '../redux/auth-reducer';
-import {FollowType, ResponseType} from '../redux/users-reducer';
+import {FollowType, PhotosType, ResponseType} from '../redux/users-reducer';
 import {ProfileResponseType} from '../componets/Profile/ProfileAPIClassComponent';
 import {StatusResponseType} from '../redux/profile-reducer';
+import {ProfileFormDataType} from '../componets/Profile/ProfileInfo/ProfileDataForm';
 
 
 const instance = axios.create({
@@ -37,6 +38,18 @@ export const profileApi = {
     },
     updateStatus(status: string) {
         return instance.put<StatusResponseType>(`/profile/status`, {status})
+    },
+    setSavedPhoto (photoFile:File) {
+        const formData = new FormData()
+        formData.append('image', photoFile)
+        return instance.put<FollowType<{ photos: PhotosType }>>(`/profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    },
+    setSavedProfile(profile: ProfileFormDataType) {
+        return instance.put(`/profile`, profile)
     }
 }
 
@@ -44,10 +57,26 @@ export const authApi = {
     setAuth() { // авторизация
         return instance.get<AuthResponseType>(`/auth/me`)
     },
-    login(email: string, password: string, rememberMe: boolean) {
-        return instance.post(`/auth/login`, {email, password, rememberMe})
+    login(email: string, password: string, rememberMe = false, captcha: string | null) {
+        return instance.post(`/auth/login`, {email, password, rememberMe, captcha})
     },
     loginOut() {
         return instance.delete<AuthResponseType>(`/auth/login`)
     },
 }
+export const securityApi = {
+    getCaptchaUrl () {
+        return instance.get<{url:string}>(`/security/get-captcha-url`)
+    }
+}
+
+// type TestType = {
+//     a:string
+//     b:number
+//     c:boolean
+// }
+//
+// type Test2Type = Omit<TestType, 'a'> // убираем а
+// type Test3Type = Pick<TestType, 'a'> // оставляем а
+//
+// type Teest4Type = Partial<TestType> // все поля необязательные
