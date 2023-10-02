@@ -16,3 +16,9 @@
     color: #bd5238;
     display: inline-block;
 }
+button {
+    background-color: #3c648e;
+    padding: 10px 32px;
+    border-radius: 5px;
+    color: white;
+}
