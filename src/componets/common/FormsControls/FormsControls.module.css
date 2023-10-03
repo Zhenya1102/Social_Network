@@ -22,3 +22,20 @@ button {
     border-radius: 5px;
     color: white;
 }
+
+.login {
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 10px;
+    background-color: #5f7aee;
+    row-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
+    max-height: 500px;
+}
+.login input {
+    border-radius: 3px;
+}

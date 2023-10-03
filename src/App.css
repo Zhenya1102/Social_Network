@@ -23,5 +23,7 @@ body {
     background-color: #faf2dd;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
 }
 

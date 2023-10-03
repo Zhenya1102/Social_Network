@@ -60,7 +60,7 @@ export const Login:React.FC<LoginPropsType> = ({loginTC, isAuth,captchaUrl}) => 
         return <Redirect to={'/profile'}/>
     }
     return (
-        <div>
+        <div className={style.login}>
             <h1>Login</h1>
             <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
         </div>
