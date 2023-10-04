@@ -7,11 +7,11 @@
 }
 
 .error span {
-    color: red;
+    color: #b4270b;
 }
 
 .formSummaryError {
-    border: 2px solid red;
+    border: 2px solid #bd5238;
     padding: 5px;
     color: #bd5238;
     display: inline-block;
@@ -24,6 +24,8 @@ button {
 }
 
 .login {
+    color: #494545;
+    border: 3px solid #494545;
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
@@ -38,4 +40,23 @@ button {
 }
 .login input {
     border-radius: 3px;
+}
+.login h1 {
+    font-size: 33px;
+    font-weight: 700;
+}
+
+.login form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+.login input {
+    padding: 10px;
+    border: 3px solid #494545;
+    background-color: #c5c4cb;
+    color: #494545;
+}
+.login input::placeholder {
+    color: #494545;
 }

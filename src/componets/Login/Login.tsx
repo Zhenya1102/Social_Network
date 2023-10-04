@@ -28,10 +28,10 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType, CaptchaPropsTyp
             <form onSubmit={handleSubmit}>
                 <div><Field placeholder={'Email'} name={'email'} type="text" component={Input}
                             validate={[required, maxLength]}/></div>
-                <div><Field placeholder={'password'} name={'password'} type="password" component={Input}
+                <div><Field placeholder={'Password'} name={'password'} type="password" component={Input}
                             validate={[required, maxLength]}/></div>
-                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required]}/>remember
-                    me
+                <div><Field type="checkbox" name={'rememberMe'} component={Input} validate={[required]}/><span>remember
+                    me</span>
                 </div>
                 {captchaUrl && <img src={captchaUrl} alt="captcha"/>}
                 {captchaUrl && <div><Field placeholder={'symbols from image'} name={'captcha'} type="text" component={Input} validate={[required]}/></div>}
