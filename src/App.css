@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 body {
     background-color: #545c65;
     list-style: none;
+    font-family: 'Roboto', sans-serif;
 }
+
+
 
 .appWrapper {
     padding: 10px;
@@ -26,4 +31,13 @@ body {
     display: flex;
     justify-content: center;
 }
+button {
+    transition: all 0.3s ease 0s;
+}
 
+button:hover {
+    background-color: #233a5d;
+}
+button:active {
+    background-color: #092756;
+}

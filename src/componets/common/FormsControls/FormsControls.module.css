@@ -35,8 +35,8 @@ button {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    min-width: 500px;
-    max-height: 500px;
+    min-width: 400px;
+    max-height: 400px;
 }
 .login input {
     border-radius: 3px;
@@ -59,4 +59,12 @@ button {
 }
 .login input::placeholder {
     color: #494545;
+    transition: all 0.3s ease 0s;
+}
+
+.login input:focus::placeholder {
+    opacity: 0;
+}
+.login div:last-child  {
+    align-self: center;
 }
