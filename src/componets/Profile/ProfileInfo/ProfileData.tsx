@@ -4,6 +4,7 @@ import userPhoto from '../../../assets/images/avatar.jpg';
 import {Contact} from './Contact';
 import {ProfileStatus} from './ProfileStatus';
 import {ContactsType, ProfileResponseType} from '../ProfileAPIClassComponent';
+import style from '../Profile.module.css'
 
 
 type ProfileDataPropsType = {
@@ -19,7 +20,7 @@ type ContactKeys = keyof ContactsType
 
 export const ProfileData:React.FC<ProfileDataPropsType> = ({profile, isOwner, onMainPhotoSelected, status, updateStatusTC, goToEditMode}) => {
     return (
-        <div>
+        <div className={style.profile_data}>
             <img className={s.userPhoto} src={profile.photos.large || userPhoto} alt="photoLarge"/>
             {isOwner && <input type={'file'} onChange={onMainPhotoSelected}/>}
             {isOwner && <div><button onClick={goToEditMode}>Edit</button></div>}

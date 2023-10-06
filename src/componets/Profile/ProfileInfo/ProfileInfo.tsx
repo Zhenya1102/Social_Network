@@ -4,6 +4,7 @@ import {Preloader} from '../../common/Preloader/Preloader';
 import {ProfileResponseType} from '../ProfileAPIClassComponent';
 import {ProfileData} from './ProfileData';
 import {ProfileDataFormReduxForm, ProfileFormDataType} from './ProfileDataForm';
+import style from '../Profile.module.css'
 
 type ProfileInfoPropsType = {
     profile: null | ProfileResponseType
@@ -30,7 +31,7 @@ export const ProfileInfo:React.FC<ProfileInfoPropsType> = ({profile,status, upda
     }
 
     return (
-        <div>
+        <div className={style.profile}>
             <div>
                 <img className={s.content__image} src={'https://s.ek.ua/posts/files/2536/wide_pic.jpg'} alt={'avatar'}/>
             </div>

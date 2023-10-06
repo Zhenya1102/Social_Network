@@ -20,7 +20,7 @@ type OwnType = {
     profile: ProfileResponseType
 }
 
-export const ProfileDataForm: React.FC<InjectedFormProps<ProfileFormDataType, OwnType> & OwnType> = ({handleSubmit, error, initialValues, profile}) => {
+export const ProfileDataForm: React.FC<InjectedFormProps<ProfileFormDataType, OwnType> & OwnType> = ({handleSubmit, error, profile}) => {
     return (
         <div>
             <form onSubmit={handleSubmit}>

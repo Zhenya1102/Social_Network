@@ -56,6 +56,7 @@ button {
     border: 3px solid #494545;
     background-color: #c5c4cb;
     color: #494545;
+    font-family: 'Roboto', sans-serif;
 }
 .login input::placeholder {
     color: #494545;
@@ -67,4 +68,8 @@ button {
 }
 .login div:last-child  {
     align-self: center;
+}
+.login div:nth-child(3) {
+    display: flex;
+    column-gap: 10px;
 }

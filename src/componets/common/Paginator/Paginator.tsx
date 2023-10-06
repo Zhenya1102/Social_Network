@@ -34,9 +34,6 @@ export const Paginator: React.FC<PaginatorPropsType> = ({
             {portionNumber > 1 && <button onClick={()=> setPortionNumber(portionNumber - 1)}>PREV</button>}
             <ul className={styles.pages}>
                 {pages.filter(p=> p >= leftPortionPageNumber && p<= rightPortionPageNumber).map((el, index) => {
-                    // return <li onClick={() => onPageChangedClick(el)}
-                    //            className={currentPage === el ? styles.selected : ''}
-                    //            key={index}>{el}</li>
                     return <li onClick={() => onPageChangedClick(el)}
                                className={cn({[styles.selectedPage]: currentPage === el}, styles.pages)}
                                key={index}>{el}</li>
