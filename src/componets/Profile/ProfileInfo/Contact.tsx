@@ -1,6 +1,6 @@
 import React from 'react';
 import s from '../Profile.module.css';
-import {ContactsType} from '../ProfileAPIClassComponent';
+
 
 type ContactPropsType = {
     contactTitle: string
