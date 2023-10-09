@@ -19,11 +19,12 @@ span {
     display: flex;
     flex-direction: column;
     row-gap: 10px;
-    background-color: #d07966;
+    background-color: #6192cb;
     max-width: 500px;
     justify-content: center;
     padding: 20px;
     border-radius: 20px;
+    font-size: 20px;
 }
 .profile {
     display: flex;
@@ -32,4 +33,14 @@ span {
 }
 .profile_data img {
     border-radius: 50px;
+}
+.profile_data input {
+    font-family: 'Roboto', sans-serif;
+    background-color: #3c648e;
+    color: #494545;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 8px;
+    font-size: 14px;
 }
